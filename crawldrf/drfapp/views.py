@@ -10,15 +10,18 @@ from drfapp.serializer import SpiderSerializer
 class SpiderAPIView(APIView):  # 查看所有及添加数据视图
 
     def post(self, request):
-        print(1)
         print(request.data)
-
+        page = request.data.get("page")
+        size = request.data.get("size")
+        request.query_params._mutable = True  
+        request.query_params['page'] = page 
+        request.query_params['size'] = size
         testnum = random.randint(0, 9)
         testnum2 = random.randint(0, 9)
         testname = ['阿里', '腾讯', '网易', '知乎', '淘宝', '拼多多', '京东', '快手', '抖音', '小红书']
         SpiderTask.objects.filter(id=testnum).update(pucode=testname[int(testnum2)])  
-        pucode = request.query_params.get('pucode')
-        if pucode == '-1':
+        pucode = request.data.get('pucode')
+        if pucode == -1:
             roles = SpiderTask.objects.get_queryset().order_by('id')
         else:
             roles = SpiderTask.objects.get_queryset().filter(pucode=pucode).order_by('id')
