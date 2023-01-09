@@ -48,7 +48,11 @@ export default () => {
       request={async (params = {}, sort, filter) => {
         // console.log(sort, filter);
         console.log(params);
-        let res = await GetSpider({page:params.page,size:params.pageSize,pucode:params.hasOwnProperty('pucode')?params.pucode:-1})
+        let res = await GetSpider({
+          page: params.current as number,
+          size: params.pageSize as number,
+          pucode: params.hasOwnProperty('pucode') ? params.pucode : -1
+        })
         console.log(res);
         return {
           data: res.results,
