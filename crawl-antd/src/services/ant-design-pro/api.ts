@@ -97,7 +97,7 @@ export async function test(options?: { [key: string]: any }) {
 //   });
 // }
 
-export async function GetSpider(body:{},options?: { [key: string]: any }) {
+export async function GetSpider(body:API.ReqSpider,options?: { [key: string]: any }) {
   return request<any>('/api/spider', {
     method: 'POST',
     data: body,
