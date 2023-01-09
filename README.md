@@ -6,4 +6,4 @@ python manage.py runserver 0.0.0.0:4640
 
 前端项目启动: 
 cd crawl-antd
-npm run serve
+npm run start
