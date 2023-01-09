@@ -10,10 +10,13 @@ from drfapp.serializer import SpiderSerializer
 class SpiderAPIView(APIView):  # 查看所有及添加数据视图
 
     def post(self, request):
+        print(1)
+        print(request.data)
+
         testnum = random.randint(0, 9)
         testnum2 = random.randint(0, 9)
         testname = ['阿里', '腾讯', '网易', '知乎', '淘宝', '拼多多', '京东', '快手', '抖音', '小红书']
-        SpiderTask.objects.filter(id=testnum).update(pucode=testname[int(testnum2)])
+        SpiderTask.objects.filter(id=testnum).update(pucode=testname[int(testnum2)])  
         pucode = request.query_params.get('pucode')
         if pucode == '-1':
             roles = SpiderTask.objects.get_queryset().order_by('id')
