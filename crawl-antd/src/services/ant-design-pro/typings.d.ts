@@ -98,4 +98,10 @@ declare namespace API {
     description?: string;
     type?: NoticeIconItemType;
   };
+
+  type ReqSpider = {
+    page: number
+    size: number
+    pucode: number|string
+  } 
 }

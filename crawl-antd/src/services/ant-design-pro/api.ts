@@ -90,28 +90,17 @@ export async function test(options?: { [key: string]: any }) {
   });
 }
 
-export async function GetSpider(options?: { [key: string]: any }) {
-  return request<any>('/api/spider', {
-    method: 'GET',
-    ...(options || {}),
-  });
-}
+// export async function GetSpider(options?: { [key: string]: any }) {
+//   return request<any>('/api/spider', {
+//     method: 'GET',
+//     ...(options || {}),
+//   });
+// }
 
-export async function GetSpider2(
-  params: {
-    // query
-    /** 当前的页码 */
-    page?: number;
-    /** 页面的容量 */
-    pageSize?: number;
-  },
-  options?: { [key: string]: any },
-) {
+export async function GetSpider(body:{},options?: { [key: string]: any }) {
   return request<any>('/api/spider', {
-    method: 'GET',
-    params: {
-      ...params,
-    },
+    method: 'POST',
+    data: body,
     ...(options || {}),
   });
 }
