@@ -81,8 +81,9 @@ export default () => {
         },
       }}
       pagination={{
-        showQuickJumper: true,
         pageSize: 10,
+        showQuickJumper: true,
+        // pageSizeOptions: [10, 20, 50, 100],
         defaultCurrent: sessionStorage.getItem('currentPage')==null?sessionStorage.getItem('currentPage'):1
       }}
       dateFormatter="string"
