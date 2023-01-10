@@ -1,21 +1,19 @@
-import React from 'react';
-import {  Button, Space, Table, Pagination } from 'antd';
-import type { ColumnsType } from 'antd/es/table';
-import { useEffect, useState } from "react";
+import { PlusOutlined } from '@ant-design/icons';
+import type { ActionType, ProColumns } from '@ant-design/pro-components';
+import { ProTable } from '@ant-design/pro-components';
+import { Button } from 'antd';
 import { GetSpider } from '../../services/ant-design-pro/api'
+import { useEffect, useRef, useState } from 'react';
 
-interface DataType {
-  key: React.Key;
-  name: string;
-  age: number;
-  address: string;
-}
+type GithubIssueItem = {
 
-const columns: ColumnsType<DataType> = [
+};
+
+const columns: ProColumns<GithubIssueItem>[] = [
   {
     title: 'id',
     dataIndex: 'id',
-    render: (text: string) => <a>{text}</a>,
+    search:false
   },
   {
     title: 'pucode',
@@ -24,48 +22,76 @@ const columns: ColumnsType<DataType> = [
   {
     title: 'value',
     dataIndex: 'value',
-  },
+    search:false
+  }
 ];
 
+export default () => {
+  const actionRef = useRef<ActionType>();
+  //@ts-ignore
+  useEffect(() => {
+    let a = setInterval(async () => {
+      actionRef.current?.reload()
+    }, 5000)
+
+    return () => {
+            clearInterval(a)
+        }
+  }, [])
 
 
-const App: React.FC = () => {
+  return (
+    <ProTable<GithubIssueItem>
+      columns={columns}
+      actionRef={actionRef}
+      cardBordered
+      request={async (params = {}, sort, filter) => {
+        // console.log(sort, filter);
+        console.log(params);
+        sessionStorage.setItem('currentPage','params.current')
 
-
-
-    const [data, setdata] = useState()
-    
-    //@ts-ignore
-    useEffect( () => {
-        GetSpider().then((res) => {
-                setdata(res.results)
-            })
-        const a =  setInterval(async () => {
-                const temp = await GetSpider()
-                setdata(temp.results)
-            }, 3000)
-
-        return () => {
-                clearInterval(a)
-            }
-    }, [])
-    
-    return (
-        
-      <div>
-
-      <Space style={{ marginBottom: 16 }}>
-        <Button >添加</Button>
-        <Button >Clear filters</Button>
-        <Button >Clear filters and sorters</Button>
-      </Space>
-      <Table
-        columns={columns}
-        dataSource={data}
-        />
-    </div>
-    );
-    
+        let res = await GetSpider({
+          page: params.current as number,
+          size: params.pageSize as number,
+          pucode: params.hasOwnProperty('pucode') ? params.pucode : -1
+        })
+        return {
+          data: res.results,
+          success: true,
+          total:res.count
+        }
+      }}
+      editable={{
+        type: 'multiple',
+      }}
+      columnsState={{
+        persistenceKey: 'pro-table-singe-demos',
+        persistenceType: 'localStorage',
+        onChange(value) {
+          console.log('value: ', value);
+        },
+      }}
+      rowKey="id"
+      search={{
+        labelWidth: 'auto',
+      }}
+      options={{
+        setting: {
+          listsHeight: 400,
+        },
+      }}
+      pagination={{
+        pageSize: 10,
+        showQuickJumper: true,
+        // pageSizeOptions: [10, 20, 50, 100],
+        defaultCurrent: sessionStorage.getItem('currentPage')==null?sessionStorage.getItem('currentPage'):1
+      }}
+      dateFormatter="string"
+      toolBarRender={() => [
+        <Button key="button" icon={<PlusOutlined />} type="primary">
+          新建
+        </Button>
+      ]}
+    />
+  );
 };
-
-export default App;
