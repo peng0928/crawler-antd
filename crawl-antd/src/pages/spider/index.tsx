@@ -3,7 +3,7 @@ import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import { Button } from 'antd';
 import { GetSpider } from '../../services/ant-design-pro/api'
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 type GithubIssueItem = {
 
@@ -28,15 +28,15 @@ const columns: ProColumns<GithubIssueItem>[] = [
 
 export default () => {
   const actionRef = useRef<ActionType>();
-
   //@ts-ignore
-  useEffect( () => {
-    const a = setInterval(async () => {
-        actionRef.current?.reload(true)
-      }, 3000)
-      return () => {
-              clearInterval(a)
-          }
+  useEffect(() => {
+    let a = setInterval(async () => {
+      actionRef.current?.reload()
+    }, 5000)
+
+    return () => {
+            clearInterval(a)
+        }
   }, [])
 
 
@@ -48,12 +48,13 @@ export default () => {
       request={async (params = {}, sort, filter) => {
         // console.log(sort, filter);
         console.log(params);
+        sessionStorage.setItem('currentPage','params.current')
+
         let res = await GetSpider({
           page: params.current as number,
           size: params.pageSize as number,
           pucode: params.hasOwnProperty('pucode') ? params.pucode : -1
         })
-        console.log(res);
         return {
           data: res.results,
           success: true,
@@ -80,8 +81,9 @@ export default () => {
         },
       }}
       pagination={{
-          showQuickJumper: true,
-          pageSize:10
+        showQuickJumper: true,
+        pageSize: 10,
+        defaultCurrent: sessionStorage.getItem('currentPage')==null?sessionStorage.getItem('currentPage'):1
       }}
       dateFormatter="string"
       toolBarRender={() => [
