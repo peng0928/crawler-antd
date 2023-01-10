@@ -4,7 +4,7 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from drfapp.models import *
-from drfapp.page import MyPageNumberPagination
+from drfapp.page import MyPageNumberPagination1
 from drfapp.serializer import SpiderSerializer
 
 class SpiderAPIView(APIView):  # 查看所有及添加数据视图
