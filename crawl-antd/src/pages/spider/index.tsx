@@ -1,9 +1,9 @@
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 import { GetSpider } from '../../services/ant-design-pro/api'
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 type GithubIssueItem = {
 
@@ -46,21 +46,29 @@ export default () => {
       actionRef={actionRef}
       cardBordered
       request={async (params = {}, sort, filter) => {
-        // console.log(sort, filter);
-        console.log(params);
-        sessionStorage.setItem('currentPage','params.current')
+        try {
+          console.log(sort, filter);
+          console.log(params);
+          sessionStorage.setItem('currentPage','params.current')
 
-        let res = await GetSpider({
-          page: params.current as number,
-          size: params.pageSize as number,
-          pucode: params.hasOwnProperty('pucode') ? params.pucode : -1
-        })
-        return {
-          data: res.results,
-          success: true,
-          total:res.count
+          let res = await GetSpider({
+            page: params.current as number,
+            size: params.pageSize as number,
+            pucode: params.hasOwnProperty('pucode') ? params.pucode : -1
+          })
+          return {
+            data: res.results,
+            success: true,
+            total:res.count
+          }
+        } catch (error) {
+          message.error("请求失败！")
+          return {
+
+          }
         }
       }}
+      loading={false}
       editable={{
         type: 'multiple',
       }}
