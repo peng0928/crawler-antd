@@ -55,18 +55,13 @@
         component: './spider',
     },
     {
-        name: 'list.test',
-        path: '/test',
-        icon: 'crown',
-        component: './test',
-    },
-    {
-        component: './404',
-    },
-    {
         name: 'spideradd',
         path: '/spideradd',
         icon: 'crown',
         component: './spideradd',
     },
+    {
+        component: './404',
+    },
+
 ];

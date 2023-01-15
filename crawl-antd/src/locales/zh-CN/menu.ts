@@ -24,7 +24,7 @@ export default {
   'menu.list': '列表页',
   'menu.list.index': '首页',
   'menu.spider': '爬虫',
-  'menu.spideradd': '爬虫2',
+  'menu.spideradd': '爬虫添加',
   'menu.list.table-list': '查询表格',
   'menu.list.test': '测试页面',
   'menu.list.basic-list': '标准列表',
