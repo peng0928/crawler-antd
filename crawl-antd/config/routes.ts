@@ -63,4 +63,10 @@
     {
         component: './404',
     },
+    {
+        name: 'spideradd',
+        path: '/spideradd',
+        icon: 'crown',
+        component: './spideradd',
+    },
 ];

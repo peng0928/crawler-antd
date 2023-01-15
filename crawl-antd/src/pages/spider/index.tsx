@@ -32,7 +32,7 @@ export default () => {
   useEffect(() => {
     let a = setInterval(async () => {
       actionRef.current?.reload()
-    }, 5000)
+    }, 15000)
 
     return () => {
             clearInterval(a)
