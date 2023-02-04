@@ -35,6 +35,7 @@ class TaskList(models.Model):
 class SpiderTask(models.Model):
     pucode = models.CharField(max_length=50, verbose_name='pucode')
     value = models.CharField(max_length=1000, verbose_name='任务详细')
+    start_time = models.DateTimeField(verbose_name='创建时间', auto_now=True)
 
 
 class MongoConfig(models.Model):

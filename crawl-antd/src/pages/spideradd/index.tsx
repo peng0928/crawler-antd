@@ -2,6 +2,7 @@ import React, { useState }  from 'react';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { Row,Col, Button, Form, Input,Radio, Select, Space, SelectProps  } from 'antd';
 import type { RadioChangeEvent } from 'antd';
+import axios from 'axios';
 
 const options: SelectProps['options'] = [
   { value: 0, label: '标题' },
@@ -13,6 +14,13 @@ const options: SelectProps['options'] = [
 const App: React.FC = () => {
   const onFinish = (values: any) => {
     console.log('Received values of form:', values);
+    axios({
+      method: 'post',
+      url: '/api/test',
+      data: {
+        "result": values
+      }
+    });
   };
 
   const handleChange = (value: string) => {

@@ -1,49 +1,28 @@
-import { PageContainer } from '@ant-design/pro-components';
-import { Alert, Card, Typography } from 'antd';
 import React from 'react';
-import { FormattedMessage, useIntl } from 'umi';
-import styles from '../Welcome.less';
+import { Space, Tag } from 'antd';
 
-const CodePreview: React.FC = ({ children }) => (
-  <pre className={styles.pre}>
-    <code>
-      <Typography.Text copyable>{children}</Typography.Text>
-    </code>
-  </pre>
-);
-
-const Welcome: React.FC = () => {
-  const intl = useIntl();
-
-  return (
-    <PageContainer>
-      <Card>
-        <Alert
-          message={intl.formatMessage({
-            id: 'pages.welcome.alertMessage',
-            defaultMessage: 'Faster and stronger heavy-duty components have been released.',
-          })}
-          type="success"
-          showIcon
-          banner
-          style={{
-            margin: -12,
-            marginBottom: 24,
-          }}
-        />
-        <Typography.Text strong>
-          <a
-            href="https://procomponents.ant.design/components/table"
-            rel="noopener noreferrer"
-            target="__blank"
-          >
-            <FormattedMessage id="pages.welcome.link" defaultMessage="Welcome" />
-          </a>
-        </Typography.Text>
-        <CodePreview>yarn add @ant-design/pro-components</CodePreview>
-      </Card>
-    </PageContainer>
-  );
+const log = (e: React.MouseEvent<HTMLElement>) => {
+  console.log(e);
 };
 
-export default Welcome;
+const preventDefault = (e: React.MouseEvent<HTMLElement>) => {
+  e.preventDefault();
+  console.log('Clicked! But prevent default.');
+};
+
+const App: React.FC = () => (
+  <Space size={[0, 8]} wrap>
+    <Tag>Tag 1</Tag>
+    <Tag>
+      <a href="https://github.com/ant-design/ant-design/issues/1862">Link</a>
+    </Tag>
+    <Tag closable onClose={log}>
+      Tag 2
+    </Tag>
+    <Tag closable onClose={preventDefault}>
+      Prevent Default
+    </Tag>
+  </Space>
+);
+
+export default App;
