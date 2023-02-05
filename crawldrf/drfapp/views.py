@@ -61,9 +61,8 @@ class TestAPIView(APIView):  # 查看所有及添加数据视图
 
     def post(self, request):
         try:
-            result = request.data.get('result')
-            print(dict(result))
-            return Response('1')
+            print(request.data)
+            return Response(request.data)
         except Exception as e:
             return Response(e)
 
