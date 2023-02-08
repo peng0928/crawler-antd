@@ -52,14 +52,28 @@
         name: 'spider',
         path: '/spider',
         icon: 'crown',
-        component: './spider',
+        routes: [
+        {
+          name: 'spider',
+          path: '/spider',
+          component: './spider',
+          hideInMenu: true
+          },
+          {
+          name: 'spiderconfig',
+          path: '/spider/:uuid',
+          component: './spider/spiderconfig',
+          hideInMenu: true
+        },
+      ]
     },
     {
         name: 'spideradd',
         path: '/spideradd',
         icon: 'crown',
         component: './spideradd',
-    },
+  },
+
     {
         component: './404',
     },

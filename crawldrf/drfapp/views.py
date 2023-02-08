@@ -25,9 +25,11 @@ class SpiderAPIView(APIView):  # 查看所有及添加数据视图
         else:
             roles = SpiderTask.objects.get_queryset().filter(pucode=pucode).order_by(sorter)
         page = MyPageNumberPagination()
-        page_roles = page.paginate_queryset(queryset=roles, request=request, view=self)
+        page_roles = page.paginate_queryset(
+            queryset=roles, request=request, view=self)
         roles_serializer = SpiderSerializer(instance=page_roles, many=True)
         return page.get_paginated_response(roles_serializer.data)  # 返回成功数据
+
 
 class SpiderDel(APIView):  # 查看所有及添加数据视图
 
@@ -42,6 +44,8 @@ class SpiderDel(APIView):  # 查看所有及添加数据视图
             return Response(Status)
         except Exception as e:
             return Response(e)
+
+
 class SpiderAdd(APIView):  # 查看所有及添加数据视图
 
     def post(self, request):
@@ -56,6 +60,7 @@ class SpiderAdd(APIView):  # 查看所有及添加数据视图
             return Response(Status)
         except Exception as e:
             return Response(e)
+
 
 class TestAPIView(APIView):  # 查看所有及添加数据视图
 

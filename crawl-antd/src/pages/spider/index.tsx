@@ -6,44 +6,53 @@ import { GetSpider } from '../../services/ant-design-pro/api';
 import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 type GithubIssueItem = {};
+import { Link, Route } from 'react-router-dom';
 const tableListDataSource: GithubIssueItem[] = [];
-
+import { useHistory } from 'react-router-dom';
 export default () => {
+  let history = useHistory();
   const options = [
     { value: 0, label: '标题' },
     { value: 1, label: '时间' },
     { value: 2, label: '内容' },
     { value: 3, label: '链接' },
   ];
-
+  const SpiderDetail = (row) => {
+    let id: string = row.id;
+    history.push(`/spider/${id}`);
+    console.log(row);
+  };
   const columns: ProColumns<GithubIssueItem>[] = [
     {
-      title: 'id',
-      dataIndex: 'id',
-      search: false,
-    },
-    {
-      disable: true,
       title: '项目',
-      dataIndex: 'state',
+      dataIndex: 'project',
       filters: true,
       onFilter: true,
       ellipsis: true,
+      width: 120,
+      fixed: 'left',
       valueType: 'select',
       valueEnum: {
-        open: {
+        Default: {
           text: '通用爬虫',
-          status: 'Error',
+          status: 'Default',
         },
-        processing: {
+        Success: {
           text: '定制爬虫',
-          status: 'Processing',
+          status: 'Success',
         },
+        Processing: { text: 'Scrapy爬虫', status: 'Processing' },
       },
     },
     {
-      title: 'pucode',
+      title: '爬虫名',
       dataIndex: 'pucode',
+      width: 120,
+      fixed: 'left',
+      valueType: 'text',
+      render: (text, row, index, action) => [
+        <Link to={{ pathname: `/spider/${row.id}`, state: { id: row.id } }}>{text}</Link>,
+      ],
     },
     {
       title: '创建时间',
@@ -85,8 +94,7 @@ export default () => {
       data: values,
     });
   };
-  var Editname = '';
-
+  const [Editname, setEditname] = useState('');
   const SpiderEdit = (row) => {
     axios({
       method: 'post',
@@ -94,15 +102,12 @@ export default () => {
       data: row,
     })
       .then(function (response) {
-        Editname = response.data.pucode;
-        console.log(response.data.pucode);
-        console.log(Editname);
-        console.log(111111111);
+        setEditname(response.data.pucode);
+        setShowModalOpen(true);
       })
       .catch(function (error) {
         console.log(error);
       });
-    setShowModalOpen(true);
   };
 
   const [form] = Form.useForm();
@@ -111,6 +116,7 @@ export default () => {
   const actionRef = useRef<ActionType>();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isScrapyModal, setScrapyModal] = useState(false);
   const [isShowModalOpen, setShowModalOpen] = useState(false);
   const [value, setValue] = useState(1);
 
@@ -144,16 +150,13 @@ export default () => {
 
   //@ts-ignore
   useEffect(() => {
-    let a = setInterval(async () => {
-      actionRef.current?.reload();
-    }, 5000);
-
-    return () => {
-      clearInterval(a);
-    };
+    //   let a = setInterval(async () => {
+    //     actionRef.current?.reload();
+    //   }, 600000);
+    //   return () => {
+    //     clearInterval(a);
+    //   };
   }, []);
-  console.log('Editname');
-  console.log(Editname);
 
   return (
     <div>
@@ -183,12 +186,10 @@ export default () => {
             </Space>
           );
         }}
-        scroll={{ x: 1300 }}
         actionRef={actionRef}
         request={async (params = {}, sorter, filter) => {
           try {
-            console.log(sorter, filter);
-            console.log(params);
+            console.log(params, sorter, filter);
             sessionStorage.setItem('currentPage', 'params.current');
 
             let res = await GetSpider({
@@ -218,10 +219,11 @@ export default () => {
             console.log('value: ', value);
           },
         }}
-        rowKey="id"
+        rowKey="key"
         search={{
           labelWidth: 'auto',
         }}
+        scroll={{ x: 1300 }}
         options={{
           setting: {
             listsHeight: 400,
@@ -245,6 +247,14 @@ export default () => {
             onClick={() => setIsModalOpen(true)}
           >
             新建
+          </Button>,
+          <Button
+            key="button"
+            icon={<PlusOutlined />}
+            type="primary"
+            onClick={() => setScrapyModal(true)}
+          >
+            新建Scrapy爬虫
           </Button>,
         ]}
       />
@@ -641,6 +651,52 @@ export default () => {
               )}
             </Form.List>
           </div>
+        </Form>
+      </Modal>
+
+      <Modal
+        title="爬虫添加"
+        onCancel={() => {
+          setScrapyModal(false), formRef.current.resetFields();
+        }}
+        open={isScrapyModal}
+        footer={[
+          <Button
+            key="cancel"
+            onClick={() => {
+              setScrapyModal(false), formRef.current.resetFields();
+            }}
+          >
+            取消
+          </Button>,
+          <Button key="submit" type="primary" onClick={onFinish}>
+            提交
+          </Button>,
+        ]}
+      >
+        <Form
+          name="dynamic_form_nest_item"
+          form={form}
+          ref={formRef}
+          autoComplete="off"
+          labelCol={{ span: 4 }}
+          wrapperCol={{ span: 18 }}
+        >
+          <Form.Item
+            label="请求方式"
+            name="method"
+            rules={[{ required: true, message: '请求方式缺少' }]}
+          >
+            <Radio.Group
+              onChange={(e) => {
+                setValue(e.target.value);
+              }}
+              value={value}
+            >
+              <Radio value={0}>GET</Radio>
+              <Radio value={1}>POST</Radio>
+            </Radio.Group>
+          </Form.Item>
         </Form>
       </Modal>
     </div>
