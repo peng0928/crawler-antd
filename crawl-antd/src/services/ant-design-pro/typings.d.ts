@@ -100,8 +100,8 @@ declare namespace API {
   };
 
   type ReqSpider = {
-    page: number
-    size: number
-    pucode: number|string
-  } 
+    page: number;
+    size: number;
+    pucode: number | string;
+  };
 }

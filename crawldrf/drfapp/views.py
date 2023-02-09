@@ -11,7 +11,6 @@ from drfapp.serializer import SpiderSerializer
 class SpiderAPIView(APIView):  # 查看所有及添加数据视图
 
     def post(self, request):
-        print(request.data)
         page = request.data.get("page")
         size = request.data.get("size")
         sorter = request.data.get("sorter", 'descend')
