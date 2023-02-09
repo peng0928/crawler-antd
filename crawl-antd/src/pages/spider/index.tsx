@@ -11,6 +11,7 @@ const tableListDataSource: GithubIssueItem[] = [];
 import { useHistory } from 'react-router-dom';
 export default () => {
   let history = useHistory();
+  const { Option } = Select;
   const options = [
     { value: 0, label: '标题' },
     { value: 1, label: '时间' },
@@ -51,7 +52,7 @@ export default () => {
       fixed: 'left',
       valueType: 'text',
       render: (text, row, index, action) => [
-        <Link to={{ pathname: `/spider/${row.id}`, state: { id: row.id } }}>{text}</Link>,
+        <Link to={{ pathname: `/spider/${row.uuid}`, state: { id: row.uuid } }}>{text}</Link>,
       ],
     },
     {
@@ -128,10 +129,7 @@ export default () => {
     axios({
       method: 'post',
       url: '/api/spider/add',
-      data: {
-        pucode: values.pucode,
-        data: values,
-      },
+      data: values,
     });
     // 关闭模态框
     setIsModalOpen(false);
@@ -157,7 +155,21 @@ export default () => {
     //     clearInterval(a);
     //   };
   }, []);
-
+  const onGenderChange = (value: string) => {
+    switch (value) {
+      case 'male':
+        formRef.current?.setFieldsValue({ note: 'Hi, man!' });
+        break;
+      case 'female':
+        formRef.current?.setFieldsValue({ note: 'Hi, lady!' });
+        break;
+      case 'other':
+        formRef.current?.setFieldsValue({ note: 'Hi there!' });
+        break;
+      default:
+        break;
+    }
+  };
   return (
     <div>
       <ProTable<GithubIssueItem>
@@ -682,20 +694,15 @@ export default () => {
           labelCol={{ span: 4 }}
           wrapperCol={{ span: 18 }}
         >
-          <Form.Item
-            label="请求方式"
-            name="method"
-            rules={[{ required: true, message: '请求方式缺少' }]}
-          >
-            <Radio.Group
-              onChange={(e) => {
-                setValue(e.target.value);
-              }}
-              value={value}
-            >
-              <Radio value={0}>GET</Radio>
-              <Radio value={1}>POST</Radio>
-            </Radio.Group>
+          <Form.Item name="project" label="项目" rules={[{ required: true }]}>
+            <Select placeholder="请选择一个项目" onChange={onGenderChange} allowClear>
+              <Option value="通过爬虫">通过爬虫</Option>
+              <Option value="Scrapy爬虫">Scrapy爬虫</Option>
+              <Option value="定制爬虫">定制爬虫</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item label="爬虫" name="SpiderName" rules={[{ required: true }]}>
+            <Input />
           </Form.Item>
         </Form>
       </Modal>

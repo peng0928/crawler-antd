@@ -1,5 +1,5 @@
-import json
-import random
+import uuid
+import datetime
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -49,9 +49,13 @@ class SpiderAdd(APIView):  # 查看所有及添加数据视图
 
     def post(self, request):
         try:
-            pucode = request.data.get('pucode')
-            data = request.data.get('data')
-            SpiderTask.objects.create(pucode=pucode, value=str(data))
+            TimeNow = datetime.datetime.now()
+            pucode = request.data.get('SpiderName')
+            project = request.data.get('project')
+            GetStrUUID = pucode + '|' + project + '|' + str(TimeNow)
+            UUID = uuid.uuid5(uuid.NAMESPACE_DNS, GetStrUUID)
+            SpiderTask.objects.create(
+                pucode=pucode, project=project, uuid=UUID)
             Status = {
                 "status": True,
                 "msg": '爬虫添加成功'

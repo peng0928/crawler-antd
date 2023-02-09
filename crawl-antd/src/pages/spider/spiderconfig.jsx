@@ -33,7 +33,21 @@ import 'codemirror/addon/edit/matchbrackets.js';
 import 'codemirror/addon/lint/lint.js';
 import 'codemirror/addon/lint/javascript-lint.js';
 
-import { Layout, Menu, Modal, theme, Button, Tree, Tabs, Form, Input, message, Upload } from 'antd';
+import {
+  Layout,
+  Col,
+  Row,
+  Menu,
+  Modal,
+  theme,
+  Button,
+  Tree,
+  Tabs,
+  Form,
+  Input,
+  message,
+  Upload,
+} from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
@@ -55,13 +69,19 @@ export default function OnlineEdit() {
       key: '0-0',
       children: [
         {
-          title: (
-            <button onClick={runFunction} type="primary">
-              1
-            </button>
-          ),
+          title: 11,
           key: '0-0-0',
-          isLeaf: true,
+          children: [
+            {
+              title: (
+                <button onClick={runFunction} type="primary">
+                  1
+                </button>
+              ),
+              key: '0-0-0-1',
+              isLeaf: true,
+            },
+          ],
         },
         {
           title: 'leaf 0-1',
@@ -101,7 +121,7 @@ export default function OnlineEdit() {
   useEffect(() => {
     const textArea = document.getElementById('editor');
     myCodeMirror = CodeMirror.fromTextArea(textArea, {
-      theme: 'yonce', //主题
+      theme: 'material', //主题
       lineNumbers: true, //显示行号
       firstLineNumber: 1, //行号从几开始，默认1
       lineWrapping: true, //滚动或换行
@@ -127,7 +147,7 @@ export default function OnlineEdit() {
       //代码补全功能
       myCodeMirror.showHint();
     });
-    myCodeMirror.setSize('40vw', '50vh'); //编辑框大小(宽，高)
+    myCodeMirror.setSize('100%', '88vh'); //编辑框大小(宽，高)
   }, []);
 
   // 将值传给后端，后端返回运行结果
@@ -237,39 +257,26 @@ export default function OnlineEdit() {
       key: '2',
       label: `文件管理`,
       children: (
-        <Layout>
-          <Header className="header">
-            <Button
-              type="primary"
-              onClick={ModerFunc}
-              icon={<UploadOutlined />}
-              loading={uploading}
-            >
-              {uploading ? 'Uploading' : '上传'}
-            </Button>
-          </Header>
-          <Sider
-            breakpoint="lg"
-            collapsedWidth="0"
-            onBreakpoint={(broken) => {
-              console.log(broken);
-            }}
-            onCollapse={(collapsed, type) => {
-              console.log(collapsed, type);
-            }}
-          >
-            <DirectoryTree
-              multiple
-              defaultExpandAll
-              onSelect={onSelect}
-              onExpand={onExpand}
-              treeData={treeData}
-            />
-          </Sider>
-          <Layout>
-            <textarea id="editor"></textarea>
-          </Layout>
-        </Layout>
+        <div>
+          <Button type="primary" onClick={ModerFunc} icon={<UploadOutlined />} loading={uploading}>
+            {uploading ? 'Uploading' : '上传'}
+          </Button>
+          <Row style={{ paddingTop: 18 }}>
+            <Col span={20} push={4}>
+              <textarea id="editor"></textarea>
+            </Col>
+            <Col span={4} pull={20}>
+              <DirectoryTree
+                multiple
+                defaultExpandAll
+                onSelect={onSelect}
+                onExpand={onExpand}
+                treeData={treeData}
+                style={{ minHeight: '88vh' }}
+              />
+            </Col>
+          </Row>
+        </div>
       ),
     },
     {
@@ -287,11 +294,25 @@ export default function OnlineEdit() {
     console.log(fileList);
     console.log(formData);
     setUploading(true);
-    setFileList([]);
-    setShowModalOpen(false);
-    setUploading(false);
-
     // You can use any AJAX library you like
+    axios({
+      method: 'post',
+      url: '/api/upload/flie',
+      data: formData,
+    })
+      .then(function (response) {
+        message.success('上传成功');
+      })
+      .catch(function (error) {
+        console.log(error);
+
+        message.error('上传失败');
+      })
+      .finally(function () {
+        setFileList([]);
+        setUploading(false);
+        setShowModalOpen(false);
+      });
   };
   const props = {
     onRemove: (file) => {
@@ -301,10 +322,9 @@ export default function OnlineEdit() {
       setFileList(newFileList);
     },
     beforeUpload: (file) => {
-      setFileList([...fileList, file]);
-      return false;
+      fileList, setFileList([...fileList, file]);
+      return true;
     },
-    fileList,
   };
   return (
     <div>
@@ -330,7 +350,7 @@ export default function OnlineEdit() {
           </Button>,
         ]}
       >
-        <Upload directory>
+        <Upload {...props} directory>
           <Button icon={<UploadOutlined />}>上传</Button>
         </Upload>
       </Modal>
