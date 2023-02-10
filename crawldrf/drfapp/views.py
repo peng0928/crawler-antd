@@ -84,10 +84,10 @@ class TestAPIView(APIView):  # 查看所有及添加数据视图
 def FileUpload(request):
     if request.method == 'POST':
         FILES = request.FILES
-        for k, v in FILES.items():
-            with open(f'./upload/{v}', 'wb+') as destination:
-                for chunk in v.chunks():
-                    destination.write(chunk)
+        # for k, v in FILES.items():
+        #     with open(f'./upload/{v}', 'wb+') as destination:
+        #         for chunk in v.chunks():
+        #             destination.write(chunk)
 
         # UploadFileModel.objects.create(
         # title=request.FILES['files'], file=request.FILES.get('files').read())
