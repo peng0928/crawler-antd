@@ -61,3 +61,8 @@ class SchedulerTask(models.Model):
     crontitle = models.CharField(max_length=255, verbose_name='定时任务名称')
     cronspider = models.CharField(max_length=255, verbose_name='爬虫')
     start_time = models.DateTimeField(verbose_name='定时任务创建时间', auto_now=True)
+
+
+class UploadFileModel(models.Model):
+    title = models.CharField(max_length=50)
+    file = models.FileField()

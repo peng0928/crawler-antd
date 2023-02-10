@@ -1,6 +1,8 @@
+from django import forms
+from django.views.decorators.csrf import csrf_exempt
 import uuid
 import datetime
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponse
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from drfapp.models import *
@@ -76,3 +78,19 @@ class TestAPIView(APIView):  # 查看所有及添加数据视图
 
     def get(self, request):
         return Response('1')
+
+
+@csrf_exempt
+def FileUpload(request):
+    if request.method == 'POST':
+        FILES = request.FILES
+        for k, v in FILES.items():
+            with open(f'./upload/{v}', 'wb+') as destination:
+                for chunk in v.chunks():
+                    destination.write(chunk)
+
+        # UploadFileModel.objects.create(
+        # title=request.FILES['files'], file=request.FILES.get('files').read())
+        return HttpResponse('1sssss')
+
+    return HttpResponse('1')
