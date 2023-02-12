@@ -37,7 +37,7 @@ class TaskList(models.Model):
 
 
 class SpiderTask(models.Model):
-    pucode = models.CharField(max_length=100, verbose_name='爬虫')
+    spider = models.CharField(max_length=100, verbose_name='爬虫')
     project = models.CharField(max_length=100, verbose_name='项目')
     value = models.CharField(max_length=1000, verbose_name='任务详细')
     uuid = models.CharField(max_length=36, verbose_name='爬虫uuid')
@@ -64,5 +64,5 @@ class SchedulerTask(models.Model):
 
 
 class UploadFileModel(models.Model):
-    title = models.CharField(max_length=50)
-    file = models.FileField()
+    uuid = models.CharField(max_length=36)
+    path = models.FileField()

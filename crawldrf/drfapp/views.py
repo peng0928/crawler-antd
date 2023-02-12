@@ -1,3 +1,4 @@
+from drfapp.treenodes import *
 from django import forms
 from django.views.decorators.csrf import csrf_exempt
 import uuid
@@ -30,6 +31,15 @@ class SpiderAPIView(APIView):  # 查看所有及添加数据视图
             queryset=roles, request=request, view=self)
         roles_serializer = SpiderSerializer(instance=page_roles, many=True)
         return page.get_paginated_response(roles_serializer.data)  # 返回成功数据
+
+
+class SpiderUUIDAPIView(APIView):
+    def post(self, request):
+        GetUUID = request.data.get("uuid")
+        GetType = request.data.get("type")
+        if GetType == 'config':
+            GetData = SpiderTask.objects.get_queryset().filter(uuid=GetUUID).values()
+            return Response(GetData)
 
 
 class SpiderDel(APIView):  # 查看所有及添加数据视图
@@ -80,17 +90,33 @@ class TestAPIView(APIView):  # 查看所有及添加数据视图
         return Response('1')
 
 
+class Upload(APIView):
+    def post(self, request):
+        TreeList = []
+        GetUUID = request.data.get("uuid")
+        GetData = UploadFileModel.objects.get_queryset().filter(uuid=GetUUID).values('path')
+        for GetQuerySet in GetData:
+            path = GetQuerySet.get('path')
+            TreeList.append(path)
+        tree = getTree(TreeList)
+        if not tree:
+            tree = [{'title': '~', 'key': '0-0'}]
+        return Response(tree)
+
+
 @csrf_exempt
 def FileUpload(request):
     if request.method == 'POST':
         FILES = request.FILES
-        # for k, v in FILES.items():
+        for k, v in FILES.items():
+            ksplit = k.split('&')
+            uuid = ksplit[0]
+            path = ksplit[1]
+            UploadFileModel.objects.create(uuid=uuid, path=path)
         #     with open(f'./upload/{v}', 'wb+') as destination:
         #         for chunk in v.chunks():
         #             destination.write(chunk)
 
-        # UploadFileModel.objects.create(
-        # title=request.FILES['files'], file=request.FILES.get('files').read())
         return HttpResponse('1sssss')
 
     return HttpResponse('1')

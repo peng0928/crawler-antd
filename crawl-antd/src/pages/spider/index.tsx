@@ -47,7 +47,7 @@ export default () => {
     },
     {
       title: '爬虫名',
-      dataIndex: 'pucode',
+      dataIndex: 'spider',
       width: 120,
       fixed: 'left',
       valueType: 'text',

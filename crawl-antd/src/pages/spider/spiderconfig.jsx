@@ -48,7 +48,7 @@ import {
   message,
   Upload,
 } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { UploadOutlined, DownOutlined } from '@ant-design/icons';
 import React, { useEffect, useRef, useState, Component } from 'react';
 import axios from 'axios';
 import { useHistory, Route } from 'react-router-dom';
@@ -68,55 +68,13 @@ export default function OnlineEdit() {
   const spidername = '222';
   const cls = '333';
   console.log(params);
-  const treeData = [
-    {
-      title: 'parent 0',
-      key: '0-0',
-      children: [
-        {
-          title: 11,
-          key: '0-0-0',
-          children: [
-            {
-              title: (
-                <button onClick={runFunction} type="primary">
-                  1
-                </button>
-              ),
-              key: '0-0-0-1',
-              isLeaf: true,
-            },
-          ],
-        },
-        {
-          title: 'leaf 0-1',
-          key: '0-0-1',
-          isLeaf: true,
-        },
-      ],
-    },
-    {
-      title: 'parent 1',
-      key: '0-1',
-      children: [
-        {
-          title: 'leaf 1-0',
-          key: '0-1-0',
-          isLeaf: true,
-        },
-        {
-          title: 'leaf 1-1',
-          key: '0-1-1',
-          isLeaf: true,
-        },
-      ],
-    },
-  ];
   let spiderfile = new FormData();
   let sfile = [];
   const onSelect = (keys, info) => {
+    myCodeMirror.setOption('value', '1111'); //初始值
     console.log('Trigger Select', keys, info);
   };
+  const onRightClick = (keys, info) => {};
   const onExpand = (keys, info) => {
     console.log('Trigger Expand', keys, info);
   };
@@ -155,6 +113,24 @@ export default function OnlineEdit() {
       myCodeMirror.showHint();
     });
     myCodeMirror.setSize('100%', '88vh'); //编辑框大小(宽，高)
+    axios({
+      method: 'post',
+      url: '/api/spider/uuid',
+      data: { uuid: params['uuid'], type: 'config' },
+    }).then(function (response) {
+      setProject(response.data[0].project);
+      setSpider(response.data[0].spider);
+      setCls(response.data[0].value);
+      console.log(isProject, setProject);
+    });
+    axios({
+      method: 'post',
+      url: '/api/upload',
+      data: { uuid: params['uuid'] },
+    }).then(function (response) {
+      setTreeData(response.data);
+      console.log(response);
+    });
   }, []);
 
   // 将值传给后端，后端返回运行结果
@@ -186,6 +162,11 @@ export default function OnlineEdit() {
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
+  const [isProject, setProject] = useState();
+  const [isSpider, setSpider] = useState();
+  const [isCls, setCls] = useState();
+  const [isTreeData, setTreeData] = useState([]);
+
   const items = [
     {
       key: '1',
@@ -219,7 +200,7 @@ export default function OnlineEdit() {
               },
             ]}
           >
-            <Input defaultValue={projectname} />
+            <Input defaultValue={isProject} />
           </Form.Item>
 
           <Form.Item
@@ -232,7 +213,7 @@ export default function OnlineEdit() {
               },
             ]}
           >
-            <Input defaultValue={spidername} />
+            <Input defaultValue={isSpider} />
           </Form.Item>
           <Form.Item
             label="命令"
@@ -244,7 +225,7 @@ export default function OnlineEdit() {
               },
             ]}
           >
-            <Input defaultValue={cls} />
+            <Input defaultValue={isCls} />
           </Form.Item>
 
           <Form.Item
@@ -273,12 +254,14 @@ export default function OnlineEdit() {
               <textarea id="editor"></textarea>
             </Col>
             <Col span={4} pull={20}>
-              <DirectoryTree
+              <Tree
                 multiple
-                defaultExpandAll
                 onSelect={onSelect}
                 onExpand={onExpand}
-                treeData={treeData}
+                // treeData={isTreeData}
+                treeData={isTreeData}
+                switcherIcon={<DownOutlined />}
+                onRightClick={onSelect}
                 style={{ minHeight: '88vh' }}
               />
             </Col>
@@ -296,7 +279,8 @@ export default function OnlineEdit() {
   const handleUpload = () => {
     fileList.forEach((file) => {
       const formData = new FormData();
-      formData.append(file.webkitRelativePath, file);
+      console.log(file);
+      formData.append(params['uuid'] + '&' + file.webkitRelativePath, file);
       console.log(file, file.webkitRelativePath);
       axios({
         method: 'post',
@@ -306,6 +290,14 @@ export default function OnlineEdit() {
         setFileList([]);
         setUploading(false);
         setShowModalOpen(false);
+      });
+      axios({
+        method: 'post',
+        url: '/api/upload',
+        data: { uuid: params['uuid'] },
+      }).then(function (response) {
+        setTreeData(response.data);
+        console.log(response);
       });
     });
   };
@@ -351,6 +343,9 @@ export default function OnlineEdit() {
       >
         <Upload {...props} directory>
           <Button icon={<UploadOutlined />}>上传</Button>
+        </Upload>
+        <Upload action="/api/upload/file" directory>
+          <Button icon={<UploadOutlined />}>Upload Directory</Button>
         </Upload>
       </Modal>
     </div>
