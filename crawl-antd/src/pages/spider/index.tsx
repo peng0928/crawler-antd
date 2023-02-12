@@ -133,6 +133,7 @@ export default () => {
     });
     // 关闭模态框
     setIsModalOpen(false);
+    setScrapyModal(false);
     setShowModalOpen(false);
     message.success('爬虫添加成功');
     // 表单清空

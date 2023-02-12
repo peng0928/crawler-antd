@@ -67,7 +67,7 @@ class SpiderAdd(APIView):  # 查看所有及添加数据视图
             GetStrUUID = pucode + '|' + project + '|' + str(TimeNow)
             UUID = uuid.uuid5(uuid.NAMESPACE_DNS, GetStrUUID)
             SpiderTask.objects.create(
-                pucode=pucode, project=project, uuid=UUID)
+                spider=pucode, project=project, uuid=UUID)
             Status = {
                 "status": True,
                 "msg": '爬虫添加成功'
