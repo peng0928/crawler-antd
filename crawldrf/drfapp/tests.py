@@ -1,28 +1,8 @@
 
 import json
 from pathlib import Path
-paths = [
-    "splash_demo/splash_demo/items.py",
-    "splash_demo/splash_demo/pipelines.py",
-    "splash_demo/splash_demo/__pycache__/settings.cpython-37.pyc",
-    "splash_demo/scrapy.cfg",
-    "splash_demo2/scrapy.cfg",
-    "splash_demo/splash_demo/spiders/__init__.py",
-    "splash_demo/splash_demo/__pycache__/__init__.cpython-37.pyc",
-    "splash_demo/splash_demo/spiders/spider.py",
-    "splash_demo/splash_demo/spiders/__pycache__/__init__.cpython-37.pyc",
-    "splash_demo/.idea/misc.xml",
-    "splash_demo/splash_demo/middlewares.py",
-    "splash_demo/.idea/splash_demo.iml",
-    "splash_demo/.idea/workspace.xml",
-    "splash_demo/.idea/inspectionProfiles/profiles_settings.xml",
-    "splash_demo/.idea/modules.xml",
-    "splash_demo/.idea/.gitignore",
-    "splash_demo/.idea/inspectionProfiles/Project_Default.xml",
-    "splash_demo/splash_demo/spiders/__pycache__/spider.cpython-37.pyc",
-    "splash_demo/splash_demo/__init__.py",
-    "splash_demo/splash_demo/settings.py",
-]
+paths = ['scrape/1.html', 'scrape/spa2.py', 'scrape/spa6.py', 'scrape/ssr3.py', 'scrape/scrapy启动.py', 'scrape/.idea/misc.xml', 'scrape/.idea/.gitignore', 'scrape/.idea/modules.xml', 'scrape/.idea/workspace.xml', 'scrape/.idea/inspectionProfiles/profiles_settings.xml', 'scrape/.idea/inspectionProfiles/Project_Default.xml', 'scrape/.idea/scrape.iml', 'splash_demo/scrapy.cfg', 'splash_demo/splash_demo/items.py', 'splash_demo/splash_demo/__init__.py', 'splash_demo/splash_demo/__pycache__/settings.cpython-37.pyc', 'splash_demo/splash_demo/middlewares.py', 'splash_demo/splash_demo/__pycache__/__init__.cpython-37.pyc', 'splash_demo/splash_demo/spiders/spider.py', 'splash_demo/splash_demo/spiders/__init__.py',
+         'splash_demo/splash_demo/spiders/__pycache__/__init__.cpython-37.pyc', 'splash_demo/.idea/.gitignore', 'splash_demo/splash_demo/settings.py', 'splash_demo/splash_demo/pipelines.py', 'splash_demo/.idea/modules.xml', 'splash_demo/splash_demo/spiders/__pycache__/spider.cpython-37.pyc', 'splash_demo/.idea/splash_demo.iml', 'splash_demo/.idea/workspace.xml', 'splash_demo/.idea/inspectionProfiles/profiles_settings.xml', 'splash_demo/.idea/inspectionProfiles/Project_Default.xml', 'splash_demo/.idea/misc.xml', '.idea/.gitignore', '.idea/misc.xml', '.idea/splash_demo.iml', '.idea/inspectionProfiles/Project_Default.xml', '.idea/inspectionProfiles/profiles_settings.xml', '.idea/modules.xml', '.idea/workspace.xml']
 
 
 def treenode(paths):
