@@ -15,11 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from drfapp import views
+from drfapp import views, spiderView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/spider', views.SpiderAPIView.as_view()),
+    path('api/spider/run', spiderView.SpiderRunAPIView.as_view()),
     path('api/spider/uuid', views.SpiderUUIDAPIView.as_view()),
     path('api/spider/add', views.SpiderAdd.as_view()),
     path('api/spider/del', views.SpiderDel.as_view()),

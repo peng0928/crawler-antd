@@ -82,6 +82,18 @@ export default function OnlineEdit() {
   const ModerFunc = () => {
     setShowModalOpen(true);
   };
+  // ** scrapy运行
+  const ScrapyRun = () => {
+    console.log(params);
+    axios({
+      method: 'post',
+      url: '/api/spider/run',
+      data: { uuid: params['uuid'], SpiderType: 0 },
+    }).then(function (response) {
+      console.log(isProject);
+      message.success('运行成功');
+    });
+  };
   // 初始化编辑器
   useEffect(() => {
     const textArea = document.getElementById('editor');
@@ -249,7 +261,7 @@ export default function OnlineEdit() {
           <Button type="primary" onClick={ModerFunc} icon={<UploadOutlined />} loading={uploading}>
             {uploading ? 'Uploading' : '上传'}
           </Button>
-          <Button type="warning" onClick={ModerFunc} icon={<UploadOutlined />} loading={uploading}>
+          <Button type="warning" onClick={ScrapyRun} icon={<UploadOutlined />} loading={uploading}>
             {uploading ? 'Uploading' : '运行'}
           </Button>
           <Row style={{ paddingTop: 18 }}>
