@@ -206,6 +206,7 @@ export default () => {
 
             let res = await GetSpider({
               page: params.current as number,
+              project: 0,
               size: params.pageSize as number,
               pucode: params.hasOwnProperty('pucode') ? params.pucode : -1,
               sorter: sorter['start_time'],

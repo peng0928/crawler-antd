@@ -38,7 +38,16 @@ class TaskList(models.Model):
 
 class SpiderTask(models.Model):
     spider = models.CharField(max_length=100, verbose_name='爬虫')
-    project = models.CharField(max_length=100, verbose_name='项目')
+    # project 0: webspider; 1: scrapy; 2: other spideer
+    project_choices = (
+        (0, 'webspider'),
+        (1, 'scrapy'),
+        (2, 'other spideer'),
+    )
+    project = models.CharField(
+        max_length=2,
+        choices=project_choices,
+        default=0)
     value = models.CharField(max_length=1000, verbose_name='任务详细')
     uuid = models.CharField(max_length=36, verbose_name='爬虫uuid')
     start_time = models.DateTimeField(verbose_name='创建时间', auto_now=True)

@@ -12,20 +12,22 @@ from drfapp.serializer import SpiderSerializer
 
 
 class SpiderAPIView(APIView):  # 查看所有及添加数据视图
-
     def post(self, request):
         page = request.data.get("page")
+        project = request.data.get("project")
         size = request.data.get("size")
         sorter = request.data.get("sorter", 'descend')
         sorter = '-start_time' if sorter == 'descend' else 'start_time'
         request.query_params._mutable = True
         request.query_params['page'] = page
         request.query_params['size'] = size
-        pucode = request.data.get('pucode')
-        if pucode == -1:
-            roles = SpiderTask.objects.get_queryset().order_by(sorter)
+        spider = request.data.get('spider')
+        if spider == -1:
+            roles = SpiderTask.objects.get_queryset().filter(
+                project=project,).order_by(sorter)
         else:
-            roles = SpiderTask.objects.get_queryset().filter(pucode=pucode).order_by(sorter)
+            roles = SpiderTask.objects.get_queryset().filter(
+                project=project, spider=spider).order_by(sorter)
         page = MyPageNumberPagination()
         page_roles = page.paginate_queryset(
             queryset=roles, request=request, view=self)
@@ -62,18 +64,22 @@ class SpiderAdd(APIView):  # 查看所有及添加数据视图
     def post(self, request):
         try:
             TimeNow = datetime.datetime.now()
-            pucode = request.data.get('SpiderName')
+            spider = request.data.get('spider')
             project = request.data.get('project')
-            GetStrUUID = pucode + '|' + project + '|' + str(TimeNow)
+            GetStrUUID = spider + '|' + str(project) + '|' + str(TimeNow)
             UUID = uuid.uuid5(uuid.NAMESPACE_DNS, GetStrUUID)
             SpiderTask.objects.create(
-                spider=pucode, project=project, uuid=UUID)
+                spider=spider, project=project, uuid=UUID)
             Status = {
                 "status": True,
                 "msg": '爬虫添加成功'
             }
             return Response(Status)
         except Exception as e:
+            Status = {
+                "status": False,
+                "msg": '爬虫添加失败'
+            }
             return Response(e)
 
 

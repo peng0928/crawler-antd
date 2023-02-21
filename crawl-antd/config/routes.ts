@@ -14,39 +14,11 @@
     ],
   },
   {
-    path: '/welcome',
-    name: 'welcome',
-    icon: 'smile',
-    component: './Welcome',
-  },
-  {
-    path: '/admin',
-    name: 'admin',
-    icon: 'crown',
-    access: 'canAdmin',
-    routes: [
-      {
-        path: '/admin/sub-page',
-        name: 'sub-page',
-        icon: 'smile',
-        component: './Welcome',
-      },
-      {
-        component: './404',
-      },
-    ],
-  },
-  {
-    name: 'list.table-list',
-    icon: 'table',
-    path: '/list',
-    component: './TableList',
-  },
-  {
     name: 'list.index',
-    path: '/index',
+    path: '/',
     icon: 'crown',
     component: './index',
+    // routes: []
   },
   {
     name: 'spider',
@@ -54,7 +26,11 @@
     icon: 'crown',
     routes: [
       {
-        name: 'scrapy爬虫',
+        name: 'webspider',
+        path: '/spider/webspider',
+        component: './spider/webspider',
+      },      {
+        name: 'scrapy',
         path: '/spider/scrapy',
         component: './spider',
       },
@@ -64,15 +40,34 @@
         component: './spider/spiderconfig',
         hideInMenu: true,
       },
+            {
+        name: 'webspideredit',
+        path: '/spider/webspider/edit/:uuid',
+        component: './spider/edit/webspideredit',
+        hideInMenu: true,
+      },
     ],
   },
-  {
-    name: 'spideradd',
-    path: '/spideradd',
+
+    {
+    name: 'task',
+    path: '/task',
     icon: 'crown',
-    component: './spideradd',
+    component: './task/task',
+  },
+  {
+    name: 'crontask',
+    path: '/crontask',
+    icon: 'crown',
+    component: './task/crontask',
   },
 
+    {
+    name: 'settion',
+    path: '/settion',
+    icon: 'crown',
+    component: './settion/settion',
+  },
   {
     component: './404',
   },
