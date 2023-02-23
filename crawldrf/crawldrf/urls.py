@@ -18,13 +18,14 @@ from django.urls import path
 from drfapp import views, spiderView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/spider', views.SpiderAPIView.as_view()),
-    path('api/spider/run', spiderView.SpiderRunAPIView.as_view()),
-    path('api/spider/uuid', views.SpiderUUIDAPIView.as_view()),
-    path('api/spider/add', views.SpiderAdd.as_view()),
-    path('api/spider/del', views.SpiderDel.as_view()),
-    path('api/upload', views.Upload.as_view()),
-    path('api/upload/file', views.FileUpload),
-    path('api/test', views.TestAPIView.as_view()),
+    path("admin/", admin.site.urls),
+    path("api/spider", views.SpiderAPIView.as_view()),
+    path("api/spider/run", spiderView.SpiderRunAPIView.as_view()),
+    path("api/spider/uuid", views.SpiderUUIDAPIView.as_view()),
+    path("api/spider/add", views.SpiderAdd.as_view()),
+    path("api/spider/del", views.SpiderDel.as_view()),
+    path("api/upload", views.Upload.as_view()),
+    path("api/upload/file", views.FileUpload),
+    path("api/test", views.TestAPIView.as_view()),
+    path("api/test/add", views.TestAddAPIView.as_view()),
 ]
