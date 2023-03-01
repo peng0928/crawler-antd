@@ -26,6 +26,9 @@ urlpatterns = [
     path("api/spider/del", views.SpiderDel.as_view()),
     path("api/upload", views.Upload.as_view()),
     path("api/upload/file", views.FileUpload),
+    # 测试
     path("api/test", views.TestAPIView.as_view()),
     path("api/test/add", views.TestAddAPIView.as_view()),
+    path("api/test/del", views.TestDelAPIView.as_view()),
+    path("api/test/del/all", views.TestDelAllAPIView.as_view()),
 ]

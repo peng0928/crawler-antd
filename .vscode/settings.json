@@ -2,5 +2,8 @@
   "editor.formatOnPaste": true,
   "editor.formatOnSave": true,
   "editor.formatOnType": true,
-  "dataworkspace.excludedProjects": ["crawldrf/drfapp/1/1.sqlproj"]
+  "dataworkspace.excludedProjects": [
+    "crawldrf/drfapp/1/1.sqlproj"
+  ],
+  "python.formatting.provider": "black"
 }

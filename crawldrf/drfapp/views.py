@@ -123,6 +123,29 @@ class TestAddAPIView(APIView):  # 添加测试
             return Response(e)
 
 
+class TestDelAPIView(APIView):
+    def post(self, request):
+        try:
+            GetId = request.data.get("id")
+            Test.objects.filter(id=GetId).delete()
+            Status = {"status": True, "msg": "删除成功"}
+            return Response(Status)
+        except Exception as e:
+            return Response(e)
+
+
+class TestDelAllAPIView(APIView):
+    def post(self, request):
+        try:
+            GetIds = request.data.get("data")
+            for GetId in GetIds:
+                Test.objects.filter(id=GetId).delete()
+            Status = {"status": True, "msg": "删除成功"}
+            return Response(Status)
+        except Exception as e:
+            return Response(e)
+
+
 class Upload(APIView):
     def post(self, request):
         TreeList = []
