@@ -26,12 +26,20 @@ export default () => {
   };
   const columns: ProColumns<GithubIssueItem>[] = [
     {
+      title: '爬虫名',
+      dataIndex: 'spider',
+      valueType: 'text',
+      fixed: 'left',
+      render: (text, row, index, action) => [
+        <Link to={{ pathname: `/spider/scrapy/${row.uuid}`, state: { id: row.uuid } }}>
+          {text}
+        </Link>,
+      ],
+    },
+    {
       title: '项目',
       dataIndex: 'project',
       filters: true,
-      onFilter: true,
-      ellipsis: true,
-      fixed: 'left',
       valueType: 'select',
       valueEnum: {
         0: {
@@ -44,17 +52,6 @@ export default () => {
         },
         1: { text: 'Scrapy爬虫', status: 'Processing' },
       },
-    },
-    {
-      title: '爬虫名',
-      dataIndex: 'spider',
-      valueType: 'text',
-      fixed: 'left',
-      render: (text, row, index, action) => [
-        <Link to={{ pathname: `/spider/scrapy/${row.uuid}`, state: { id: row.uuid } }}>
-          {text}
-        </Link>,
-      ],
     },
     {
       title: '创建时间',

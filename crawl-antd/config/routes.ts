@@ -17,7 +17,7 @@
     name: 'list.index',
     path: '/',
     icon: 'crown',
-    component: './index',
+    component: './spiderindex',
     // routes: []
   },
   {
