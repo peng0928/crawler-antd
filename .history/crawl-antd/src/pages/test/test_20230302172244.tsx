@@ -376,9 +376,7 @@ export default () => {
       >
         <html id="modalHTMLTest">Please try again</html>
         <script type="text/javascript">
-          {document.getElementById('modalHTMLTest')
-            ? (document.getElementById('modalHTMLTest').innerHTML = modalContent)
-            : null}
+          {(document.getElementById('modalHTMLTest').innerHTML = modalContent)}
         </script>
       </Modal>
 

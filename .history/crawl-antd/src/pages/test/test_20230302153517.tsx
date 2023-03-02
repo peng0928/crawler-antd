@@ -16,7 +16,6 @@ export default () => {
   const actionRef = useRef<ActionType>();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [iskzModalOpen, setkzModalOpen] = useState(false);
-  const [ispsModalOpen, setpsModalOpen] = useState(false);
   const [isvalue, setValue] = useState(0);
   const [iskz, setkz] = useState('');
   interface ActionType {
@@ -98,9 +97,6 @@ export default () => {
       valueType: 'option',
       render: (_, row, index, action) => [
         <Button size="small" type="primary" onClick={() => TestKZ(row)}>
-          快照
-        </Button>,
-        <Button size="small" type="primary" onClick={() => Testps(row)}>
           源码
         </Button>,
         <Button size="small" type="primary" danger onClick={() => TestDel(row)}>
@@ -126,11 +122,6 @@ export default () => {
   const TestKZ = (row) => {
     setkz(row.source);
     setkzModalOpen(true);
-  };
-
-  const Testps = (row) => {
-    setkz(row.source);
-    setpsModalOpen(true);
   };
 
   const onFinish = async () => {
@@ -374,34 +365,13 @@ export default () => {
           </Button>,
         ]}
       >
-        <html id="modalHTMLTest">Please try again</html>
-        <script type="text/javascript">
+        {iskz}
+        <div id="modalHTMLTest">Please try again</div>
+        <script>
           {document.getElementById('modalHTMLTest')
             ? (document.getElementById('modalHTMLTest').innerHTML = modalContent)
             : null}
         </script>
-      </Modal>
-
-      {/* 源码模态框 */}
-      <Modal
-        title="页面源码"
-        onCancel={() => {
-          setpsModalOpen(false);
-        }}
-        open={ispsModalOpen}
-        width={'78%'}
-        footer={[
-          <Button
-            key="cancel"
-            onClick={() => {
-              setpsModalOpen(false);
-            }}
-          >
-            取消
-          </Button>,
-        ]}
-      >
-        {iskz}
       </Modal>
     </div>
   );

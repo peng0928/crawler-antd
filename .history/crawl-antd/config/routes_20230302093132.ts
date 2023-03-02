@@ -19,7 +19,6 @@
   },
 
   {
-    name: 'list.index',
     path: '/index',
     icon: 'crown',
     component: './spiderindex',

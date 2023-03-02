@@ -16,7 +16,6 @@ export default () => {
   const actionRef = useRef<ActionType>();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [iskzModalOpen, setkzModalOpen] = useState(false);
-  const [ispsModalOpen, setpsModalOpen] = useState(false);
   const [isvalue, setValue] = useState(0);
   const [iskz, setkz] = useState('');
   interface ActionType {
@@ -98,9 +97,6 @@ export default () => {
       valueType: 'option',
       render: (_, row, index, action) => [
         <Button size="small" type="primary" onClick={() => TestKZ(row)}>
-          快照
-        </Button>,
-        <Button size="small" type="primary" onClick={() => Testps(row)}>
           源码
         </Button>,
         <Button size="small" type="primary" danger onClick={() => TestDel(row)}>
@@ -126,11 +122,6 @@ export default () => {
   const TestKZ = (row) => {
     setkz(row.source);
     setkzModalOpen(true);
-  };
-
-  const Testps = (row) => {
-    setkz(row.source);
-    setpsModalOpen(true);
   };
 
   const onFinish = async () => {
@@ -201,7 +192,14 @@ export default () => {
         break;
     }
   };
-  const modalContent = iskz;
+  const modalContent = `<p style="margin-top: 0px; margin-bottom: 0px; padding: 0px; line-height: 24px; color: rgb(51, 51, 51); text-align: justify; font-family: arial; white-space: normal; background-color: rgb(255, 255, 255);">
+    <span class="bjh-p"><span class="bjh-strong" style="font-size: 18px; font-weight: 700;">辽宁男篮夺冠</span>，辽宁男篮在2018CBA决赛当中以总比分4比0的比分战胜了浙江广厦队，队史首次拿到了CBA的总冠军头衔。北京时间4月22日晚间，新赛季CBA总决赛第四场在辽宁队主场开启，主场辽宁拿下对手登顶。</span>
+</p>
+<p>
+    <img class="large" src="http://t11.baidu.com/it/u=1330083070,2886574451&fm=173&app=25&f=JPEG?w=640&h=423&s=3621920902A1C2F00C30578E0300A084"/>
+</p>
+    <br/>
+</p>`;
   return (
     <div>
       <ProTable<GithubIssueItem>
@@ -374,34 +372,13 @@ export default () => {
           </Button>,
         ]}
       >
-        <html id="modalHTMLTest">Please try again</html>
-        <script type="text/javascript">
+        {iskz}
+        <div id="modalHTMLTest">Please try again</div>
+        <script>
           {document.getElementById('modalHTMLTest')
             ? (document.getElementById('modalHTMLTest').innerHTML = modalContent)
             : null}
         </script>
-      </Modal>
-
-      {/* 源码模态框 */}
-      <Modal
-        title="页面源码"
-        onCancel={() => {
-          setpsModalOpen(false);
-        }}
-        open={ispsModalOpen}
-        width={'78%'}
-        footer={[
-          <Button
-            key="cancel"
-            onClick={() => {
-              setpsModalOpen(false);
-            }}
-          >
-            取消
-          </Button>,
-        ]}
-      >
-        {iskz}
       </Modal>
     </div>
   );

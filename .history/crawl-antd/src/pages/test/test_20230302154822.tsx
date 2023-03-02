@@ -130,7 +130,7 @@ export default () => {
 
   const Testps = (row) => {
     setkz(row.source);
-    setpsModalOpen(true);
+    setkzModalOpen(true);
   };
 
   const onFinish = async () => {
@@ -374,8 +374,8 @@ export default () => {
           </Button>,
         ]}
       >
-        <html id="modalHTMLTest">Please try again</html>
-        <script type="text/javascript">
+        <div id="modalHTMLTest">Please try again</div>
+        <script>
           {document.getElementById('modalHTMLTest')
             ? (document.getElementById('modalHTMLTest').innerHTML = modalContent)
             : null}
@@ -386,15 +386,15 @@ export default () => {
       <Modal
         title="页面源码"
         onCancel={() => {
-          setpsModalOpen(false);
+          setkzModalOpen(false);
         }}
-        open={ispsModalOpen}
+        open={iskzModalOpen}
         width={'78%'}
         footer={[
           <Button
             key="cancel"
             onClick={() => {
-              setpsModalOpen(false);
+              setkzModalOpen(false);
             }}
           >
             取消

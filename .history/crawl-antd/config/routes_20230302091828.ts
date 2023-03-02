@@ -1,9 +1,5 @@
 ﻿export default [
   {
-    path: '/',
-    redirect: '/index',
-  },
-  {
     path: '/user',
     layout: false,
     routes: [
@@ -17,10 +13,8 @@
       },
     ],
   },
-
   {
-    name: 'list.index',
-    path: '/index',
+    path: '/',
     icon: 'crown',
     component: './spiderindex',
     routes: [],
