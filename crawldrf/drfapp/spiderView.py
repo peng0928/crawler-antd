@@ -1,4 +1,4 @@
-import os
+from multiprocessing import Process
 import datetime
 from django.shortcuts import render, HttpResponse
 from rest_framework.response import Response
@@ -17,20 +17,27 @@ scheduler.start()
 
 
 def ScrapyRun(spider):
-    print(os.getcwd())
-    cls = 'scrapy crawl %s' % spider
     pbdate = datetime.datetime.now()
-    print(cls, pbdate)
+    queryset = SpiderTask.objects.get(id=spider)
+    queryset = eval(queryset.value)
+    cls = ['scrapy', 'crawl', 'myspider', '-s', 'LOG_STDOUT=true', '-s',
+           'LOG_FILE=log/{}{}{}{}.log'.format(spider, pbdate.year, pbdate.month, pbdate.day)]
+    for k, v in dict(queryset).items():
+        cls.append('-a')
+        cls.append(f"{k}=%s" % urllib.parse.quote(str(v), 'utf-8'))
+    cls = ' '.join(cls)
 
 
 class SpiderRunAPIView(APIView):  # 运行爬虫
     def post(self, request):
-        uuid = request.data.get("uuid")
-        SpiderType = request.data.get("SpiderType")
-        timenow = (datetime.datetime.now() +
-                   datetime.timedelta(seconds=3)).strftime('%Y-%m-%d %H:%M:%S')
-        if SpiderType == 0:
-            JobStauts = scheduler.add_job(
-                ScrapyRun, 'date', run_date=timenow, args=[uuid])
-        Status = {'jobid': JobStauts.id}
+        GetData = request.data.get("data")
+        project = GetData.get("project")
+        # timenow = (datetime.datetime.now() +
+        #            datetime.timedelta(seconds=3)).strftime('%Y-%m-%d %H:%M:%S')
+        if project == 0:
+            print(GetData)
+            # JobStauts = scheduler.add_job(
+            #     ScrapyRun, 'date', run_date=timenow, args=[uuid])
+        # Status = {'jobid': JobStauts.id}
+        Status = {'jobid': 1}
         return Response(Status)  # 返回成功数据

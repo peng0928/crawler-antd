@@ -201,7 +201,6 @@ export default () => {
         break;
     }
   };
-  const modalContent = iskz;
   return (
     <div>
       <ProTable<GithubIssueItem>
@@ -377,7 +376,7 @@ export default () => {
         <html id="modalHTMLTest">Please try again</html>
         <script type="text/javascript">
           {document.getElementById('modalHTMLTest')
-            ? (document.getElementById('modalHTMLTest').innerHTML = modalContent)
+            ? (document.getElementById('modalHTMLTest').innerHTML = iskz)
             : null}
         </script>
       </Modal>

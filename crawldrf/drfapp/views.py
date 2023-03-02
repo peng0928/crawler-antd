@@ -1,7 +1,8 @@
 from drfapp.treenodes import *
 from django import forms
 from django.views.decorators.csrf import csrf_exempt
-import uuid, time
+import uuid
+import time
 import datetime
 from django.shortcuts import render, HttpResponse
 from rest_framework.response import Response
@@ -39,7 +40,8 @@ class SpiderAPIView(APIView):  # 查看所有及添加数据视图
                 .order_by(sorter)
             )
         page = MyPageNumberPagination()
-        page_roles = page.paginate_queryset(queryset=roles, request=request, view=self)
+        page_roles = page.paginate_queryset(
+            queryset=roles, request=request, view=self)
         roles_serializer = SpiderSerializer(instance=page_roles, many=True)
         return page.get_paginated_response(roles_serializer.data)  # 返回成功数据
 
@@ -68,11 +70,14 @@ class SpiderAdd(APIView):  # 查看所有及添加数据视图
     def post(self, request):
         try:
             TimeNow = datetime.datetime.now()
-            spider = request.data.get("spider")
-            project = request.data.get("project")
+            SpiderData = request.data.get("data")
+            project = SpiderData.get("project")
+            spider = SpiderData.get("spider")
+            Data = json.dumps(SpiderData)
             GetStrUUID = spider + "|" + str(project) + "|" + str(TimeNow)
             UUID = uuid.uuid5(uuid.NAMESPACE_DNS, GetStrUUID)
-            SpiderTask.objects.create(spider=spider, project=project, uuid=UUID)
+            SpiderTask.objects.create(
+                spider=spider, project=project, uuid=UUID, value=Data)
             Status = {"status": True, "msg": "爬虫添加成功"}
             return Response(Status)
         except Exception as e:

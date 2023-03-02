@@ -1,4 +1,9 @@
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import {
+  MinusCircleOutlined,
+  CheckOutlined,
+  ExclamationCircleFilled,
+  PlusOutlined,
+} from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable } from '@ant-design/pro-components';
 import { Button, message, Modal, Form, Radio, Input, Space, Select, Tag, Table } from 'antd';
@@ -71,7 +76,7 @@ export default () => {
           编辑
           {/* </Link> */}
         </Button>,
-        <Button size="small" type="primary" onClick={() => {}}>
+        <Button size="small" type="primary" onClick={() => SpiderRun(row)}>
           运行
         </Button>,
         <Button size="small" type="primary" danger onClick={() => SpiderDel(row)}>
@@ -86,6 +91,24 @@ export default () => {
     SendAxios('/api/spider/del', DelData);
     message.success('爬虫删除成功');
     actionRef.current?.reload();
+  };
+  const { confirm } = Modal;
+  const SpiderRun = (row) => {
+    confirm({
+      title: '确定',
+      icon: <CheckOutlined />,
+      content: '运行程序',
+      onOk() {
+        SendAxios('/api/spider/run', { data: row });
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+    // const DelData = { id: row.id };
+    // SendAxios('/api/spider/del', DelData);
+    // message.success('爬虫删除成功');
+    // actionRef.current?.reload();
   };
   const SendAxios = (url, values) => {
     axios({
@@ -117,13 +140,13 @@ export default () => {
     axios({
       method: 'post',
       url: '/api/spider/add',
-      data: values,
+      data: { data: values },
     });
     // 关闭模态框
-    setIsModalOpen(false);
+    // setIsModalOpen(false);
     message.success('爬虫添加成功');
     // 表单清空
-    formRef.current.resetFields();
+    // formRef.current.resetFields();
     actionRef.current?.reload();
   };
   const a = (row) => {
@@ -132,6 +155,7 @@ export default () => {
   const handleChange = (value: string) => {
     console.log(`selected ${value}`);
   };
+  const filter = 'style';
 
   //@ts-ignore
   useEffect(() => {
@@ -286,16 +310,13 @@ export default () => {
           labelCol={{ span: 4 }}
           wrapperCol={{ span: 18 }}
         >
-          <Form.Item
-            label="请求方式"
-            name="method"
-            rules={[{ required: true, message: '请求方式缺少' }]}
-          >
+          <Form.Item label="请求方式" name="method">
             <Radio.Group
               onChange={(e) => {
                 setValue(e.target.value);
               }}
               value={value}
+              defaultValue={0}
             >
               <Radio value={0}>GET</Radio>
               <Radio value={1}>POST</Radio>
@@ -304,31 +325,34 @@ export default () => {
           <Form.Item
             label="starturl"
             name="starturl"
-            rules={[{ required: true, message: '起始网站缺少' }]}
+            rules={[
+              {
+                validator: async (_, names) => {
+                  if (!names || (names.search('http://') && names.search('https://'))) {
+                    return Promise.reject(new Error('链接不正确'));
+                  }
+                },
+              },
+            ]}
           >
-            <Input name="starturl" defaultValue="" />
+            <Input name="starturl" placeholder="http://example.com" />
           </Form.Item>
           <Form.Item label="host" name="host" rules={[{ required: true, message: '域名缺少' }]}>
-            <Input name="host" defaultValue="" />
+            <Input name="host" placeholder="example.com" />
           </Form.Item>
           <Form.Item
             label="spider"
             name="spider"
             rules={[{ required: true, message: 'spider缺少' }]}
           >
-            <Input name="pucode" defaultValue="" />
+            <Input name="pucode" placeholder="spider" />
           </Form.Item>
-          <Form.Item label="data" name="data" rules={[{ required: true, message: 'data缺少' }]}>
+          <Form.Item label="data" name="data">
             <Input.TextArea rows={4} />
           </Form.Item>
-          <Form.Item
-            label="headers"
-            name="headers"
-            rules={[{ required: true, message: 'headers缺少' }]}
-          >
+          <Form.Item label="headers" name="headers">
             <Input.TextArea rows={4} />
           </Form.Item>
-
           <div
             style={{
               width: '100%',
@@ -377,17 +401,8 @@ export default () => {
                       >
                         <Input style={{ width: 300 }} placeholder="Last Name" />
                       </Form.Item>
-                      <Form.Item
-                        {...restField}
-                        name={[name, 'filter']}
-                        rules={[{ required: false, message: 'Missing values' }]}
-                      >
-                        <Input
-                          style={{ width: 300 }}
-                          placeholder="Last Name"
-                          addonBefore="过滤器"
-                          defaultValue="过滤器"
-                        />
+                      <Form.Item {...restField} name={[name, 'filter']}>
+                        <Input style={{ width: 300 }} addonBefore="过滤器" defaultValue={filter} />
                       </Form.Item>
                       <MinusCircleOutlined onClick={() => remove(name)} />
                     </Space>
