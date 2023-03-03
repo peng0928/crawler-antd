@@ -124,7 +124,8 @@ export default () => {
     });
   };
   const TestKZ = (row) => {
-    history.push(`/test/view/${row.id}`);
+    window.location.href = `/test/view/${row.id}`;
+    // history.push(`/test/view/${row.id}`);
     // setkz(row.source);
     // setkzModalOpen(true);
   };

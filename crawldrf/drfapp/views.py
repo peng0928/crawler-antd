@@ -98,6 +98,20 @@ class TestAPIView(APIView):  # 查看所有及添加数据视图
         return Response("1")
 
 
+class TestAPIViewView(APIView):  # 查看所有及添加数据视图
+    def post(self, request):
+        try:
+            GetID = request.data.get('id')
+            queryset = Test.objects.all().filter(id=GetID)
+            querydict = {"results": queryset.values()}
+            return Response(querydict)
+        except Exception as e:
+            return Response(e)
+
+    def get(self, request):
+        return Response("1")
+
+
 class TestAddAPIView(APIView):  # 添加测试
     def post(self, request):
         try:

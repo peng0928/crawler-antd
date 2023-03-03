@@ -78,12 +78,14 @@
     path: '/test',
     icon: 'crown',
     component: './test/test',
-  },
-  {
-    name: 'test1',
-    path: '/test/view/:id',
-    component: './test/testview',
-    hideInMenu: true,
+    routes: [
+      {
+        name: 'test',
+        path: '/test/view/:id',
+        component: './test/testview',
+        hideInMenu: true,
+      },
+    ],
   },
   {
     component: './404',
