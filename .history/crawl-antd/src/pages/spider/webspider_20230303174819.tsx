@@ -408,7 +408,7 @@ export default () => {
                     </Space>
                   ))}
                   <Form.Item>
-                    <Button type="dashed" onClick={() => add({ filter: 'style|script' })}>
+                    <Button type="dashed" onClick={() => add()}>
                       添加列表页
                     </Button>
                   </Form.Item>

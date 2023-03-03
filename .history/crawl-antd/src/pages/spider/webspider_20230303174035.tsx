@@ -309,6 +309,7 @@ export default () => {
           autoComplete="off"
           labelCol={{ span: 4 }}
           wrapperCol={{ span: 18 }}
+          initialValues={{ filter: 'style' }}
         >
           <Form.Item label="请求方式" name="method">
             <Radio.Group
@@ -408,7 +409,7 @@ export default () => {
                     </Space>
                   ))}
                   <Form.Item>
-                    <Button type="dashed" onClick={() => add({ filter: 'style|script' })}>
+                    <Button type="dashed" onClick={() => add()}>
                       添加列表页
                     </Button>
                   </Form.Item>

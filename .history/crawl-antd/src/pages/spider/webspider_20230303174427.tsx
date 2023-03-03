@@ -309,6 +309,7 @@ export default () => {
           autoComplete="off"
           labelCol={{ span: 4 }}
           wrapperCol={{ span: 18 }}
+          initialValues={{ filter: 'style' }}
         >
           <Form.Item label="请求方式" name="method">
             <Radio.Group
@@ -401,14 +402,14 @@ export default () => {
                       >
                         <Input style={{ width: 300 }} placeholder="Last Name" />
                       </Form.Item>
-                      <Form.Item {...restField} name={[name, 'filter']}>
+                      <Form.Item {...restField} name="filter">
                         <Input style={{ width: 300 }} addonBefore="过滤器" />
                       </Form.Item>
                       <MinusCircleOutlined onClick={() => remove(name)} />
                     </Space>
                   ))}
                   <Form.Item>
-                    <Button type="dashed" onClick={() => add({ filter: 'style|script' })}>
+                    <Button type="dashed" onClick={() => add()}>
                       添加列表页
                     </Button>
                   </Form.Item>
