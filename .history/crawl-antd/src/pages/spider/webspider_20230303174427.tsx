@@ -72,13 +72,12 @@ export default () => {
       valueType: 'option',
       render: (text, row, index, action) => [
         <Button type="default" size="small" onClick={() => SpiderEdit(row)}>
+          {/* <Link to={{ pathname: `/spider/webspider/edit/${row.uuid}`, state: { id: row.uuid } }}> */}
           编辑
+          {/* </Link> */}
         </Button>,
         <Button size="small" type="primary" onClick={() => SpiderRun(row)}>
           运行
-        </Button>,
-        <Button size="small" type="primary" onClick={() => SpiderRun(row)}>
-          结果
         </Button>,
         <Button size="small" type="primary" danger onClick={() => SpiderDel(row)}>
           删除
@@ -256,7 +255,11 @@ export default () => {
           onCollapse: setCollapsed,
         }}
         scroll={{ x: 1300 }}
-        options={{}}
+        options={{
+          setting: {
+            listsHeight: 400,
+          },
+        }}
         pagination={{
           pageSize: 10,
           showQuickJumper: true,
@@ -306,6 +309,7 @@ export default () => {
           autoComplete="off"
           labelCol={{ span: 4 }}
           wrapperCol={{ span: 18 }}
+          initialValues={{ filter: 'style' }}
         >
           <Form.Item label="请求方式" name="method">
             <Radio.Group
@@ -332,7 +336,7 @@ export default () => {
               },
             ]}
           >
-            <Input.TextArea name="starturl" placeholder="http://example.com" />
+            <Input name="starturl" placeholder="http://example.com" />
           </Form.Item>
           <Form.Item label="host" name="host" rules={[{ required: true, message: '域名缺少' }]}>
             <Input name="host" placeholder="example.com" />
@@ -398,14 +402,14 @@ export default () => {
                       >
                         <Input style={{ width: 300 }} placeholder="Last Name" />
                       </Form.Item>
-                      <Form.Item {...restField} name={[name, 'filter']}>
+                      <Form.Item {...restField} name="filter">
                         <Input style={{ width: 300 }} addonBefore="过滤器" />
                       </Form.Item>
                       <MinusCircleOutlined onClick={() => remove(name)} />
                     </Space>
                   ))}
                   <Form.Item>
-                    <Button type="dashed" onClick={() => add({ filter: 'style|script' })}>
+                    <Button type="dashed" onClick={() => add()}>
                       添加列表页
                     </Button>
                   </Form.Item>

@@ -72,13 +72,12 @@ export default () => {
       valueType: 'option',
       render: (text, row, index, action) => [
         <Button type="default" size="small" onClick={() => SpiderEdit(row)}>
+          {/* <Link to={{ pathname: `/spider/webspider/edit/${row.uuid}`, state: { id: row.uuid } }}> */}
           编辑
+          {/* </Link> */}
         </Button>,
         <Button size="small" type="primary" onClick={() => SpiderRun(row)}>
           运行
-        </Button>,
-        <Button size="small" type="primary" onClick={() => SpiderRun(row)}>
-          结果
         </Button>,
         <Button size="small" type="primary" danger onClick={() => SpiderDel(row)}>
           删除
@@ -256,7 +255,11 @@ export default () => {
           onCollapse: setCollapsed,
         }}
         scroll={{ x: 1300 }}
-        options={{}}
+        options={{
+          setting: {
+            listsHeight: 400,
+          },
+        }}
         pagination={{
           pageSize: 10,
           showQuickJumper: true,
@@ -332,7 +335,7 @@ export default () => {
               },
             ]}
           >
-            <Input.TextArea name="starturl" placeholder="http://example.com" />
+            <Input name="starturl" placeholder="http://example.com" />
           </Form.Item>
           <Form.Item label="host" name="host" rules={[{ required: true, message: '域名缺少' }]}>
             <Input name="host" placeholder="example.com" />

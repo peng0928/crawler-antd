@@ -2,8 +2,13 @@
 # @Date    : 2022-11-29 11:21
 # @Author  : chenxuepeng
 
-import urllib, datetime, json, re, scrapy, uuid
-from urllib import parse
+import urllib
+import urllib.parse
+import datetime
+import json
+import re
+import scrapy
+import uuid
 from spidertools.tool.data_process import Xpath
 from urllib.parse import urljoin
 
@@ -15,7 +20,7 @@ class MainSpider(scrapy.Spider):
     def __init__(self, *args, **kwargs):
         super(MainSpider, self).__init__(*args, **kwargs)
         self.pname = []
-        self.listing_url = self.eval(kwargs.get('listing_url'))
+        self.listing_url = self.eval(kwargs.get('starturl'))
         self.listing_name = self.eval(kwargs.get('listing_name'))
         self.listing_value = self.eval(kwargs.get('listing_value'))
         self.listing_filter = self.eval(kwargs.get('listing_filter'))
@@ -23,7 +28,7 @@ class MainSpider(scrapy.Spider):
         self.content_value = self.eval(kwargs.get('content_value'))
         self.content_filter = self.eval(kwargs.get('content_filter'))
         self.host = self.eval(kwargs.get('host'))
-        self.pucode = self.eval(kwargs.get('pucode'))
+        self.pucode = self.eval(kwargs.get('spider'))
         self.nextpage_value = kwargs.get('nextpage_value')
         self.nextpage_name = kwargs.get('nextpage_name')
         startpage = kwargs.get('startpage')
@@ -39,15 +44,16 @@ class MainSpider(scrapy.Spider):
             'Accept-Language': 'en,zh-CN,zh;q=0.9,en;q=0.8',
         }
         self.listing_data = listing_data[0] if listing_data else listing_data
-        self.headers = self.headers_cell(header=listing_headers[0]) if listing_headers else headers
+        self.headers = self.headers_cell(
+            header=listing_headers[0]) if listing_headers else headers
         nextpage_value = self.eval(kwargs.get('nextpage_value'))
         self.nextpage_value = nextpage_value[0] if nextpage_value else None
-        self.nextpage_name = self.eval(self.nextpage_name)[0] if self.nextpage_name else None
+        self.nextpage_name = self.eval(self.nextpage_name)[
+            0] if self.nextpage_name else None
         self.nextpage = True
-        print(self.headers)
 
     def start_requests(self):
-        self.listing_url = self.listing_url[0].split('\r\n')
+        self.listing_url = self.listing_url.split('\n')
         for starturl in self.listing_url:
             if self.method == 'POST':
                 meta = {
@@ -72,11 +78,10 @@ class MainSpider(scrapy.Spider):
         liserrorlist = []
         self.pname = []
         for fate in range(len(self.listing_name)):
-            lfilter = self.listing_filter[fate] if self.listing_filter[fate] != '过滤器' else None
+            lfilter = self.listing_filter[fate] if self.listing_filter[fate] else None
             lname = self.listing_name[fate]
             lvalue = self.listing_value[fate]
             lresponse = Xpath(response)
-
             if lname == '链接':
                 value = lresponse.xpath(lvalue, filter=lfilter, is_list=True)
                 value = [urljoin(response.url, i) for i in value]
@@ -105,7 +110,8 @@ class MainSpider(scrapy.Spider):
 
             if self.nextpage_value and self.nextpage:
                 if self.nextpage_name == 'xpath':
-                    value = lresponse.xpath(self.nextpage_value, filter=lfilter)
+                    value = lresponse.xpath(
+                        self.nextpage_value, filter=lfilter)
                     next_url = response.urljoin(value)
                     if self.startpage < self.endpage + 1:
                         self.startpage += 1
@@ -119,15 +125,17 @@ class MainSpider(scrapy.Spider):
                             yield scrapy.Request(url=response.url, callback=self.listing_parse, method='POST',
                                                  headers=self.headers, body=body, meta={'pucode': self.pucode})
                         else:
-                            next_url = response.urljoin(self.nextpage_value).replace('$', str(page))
+                            next_url = response.urljoin(
+                                self.nextpage_value).replace('$', str(page))
                             self.nextpage = False
                             yield scrapy.Request(url=next_url, headers=self.headers, callback=self.listing_parse,
                                                  meta={'pucode': self.pucode})
 
-        ldict['pucode'] = self.pucode[0]
+        ldict['pucode'] = self.pucode
         ldict['url'] = response.url
         ldict['createtime'] = self.datetime()
-        ldict['uuid'] = uuid.uuid5(uuid.NAMESPACE_DNS, (response.url + response.text)).hex
+        ldict['uuid'] = uuid.uuid5(
+            uuid.NAMESPACE_DNS, (response.url + response.text)).hex
         ldict['pagesource'] = response.text
         if liserrorlist:
             ldict['errors'] = {'listing_errors': liserrorlist,
@@ -229,12 +237,14 @@ class MainSpider(scrapy.Spider):
         return headers_dict
 
     def eval(self, obj):
-        obj = eval(urllib.parse.unquote(obj, 'utf-8')) if obj else obj
         try:
-            obj = obj.remove('') if isinstance(obj, list) else obj
+            obj = urllib.parse.unquote(obj, 'utf-8')
+            if '[' in obj:
+                return eval(obj) if obj else obj
+            else:
+                return obj
         except:
-            pass
-        return obj
+            return obj
 
     def datetime(self):
         return datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')

@@ -69,10 +69,27 @@ class SpiderDel(APIView):  # 查看所有及添加数据视图
 class SpiderAdd(APIView):  # 查看所有及添加数据视图
     def post(self, request):
         try:
+            ListingDict = {}
+            CistingDist = {}
+            listing_name = []
+            listing_value = []
+            listing_filter = []
             TimeNow = datetime.datetime.now()
             SpiderData = request.data.get("data")
             project = SpiderData.get("project")
             spider = SpiderData.get("spider")
+            LData = SpiderData.get('LData')
+            CData = SpiderData.get('CData')
+            if LData:
+                for _p in LData:
+                    listing_name.append(str(_p.get('title')[0]))
+                    listing_value.append(_p.get('xpath'))
+                    listing_filter.append(_p.get('filter'))
+                ListingDict['listing_name'] = listing_name
+                ListingDict['listing_value'] = listing_value
+                ListingDict['listing_filter'] = listing_filter
+                del SpiderData['LData']
+                SpiderData.update(ListingDict)
             Data = json.dumps(SpiderData)
             GetStrUUID = spider + "|" + str(project) + "|" + str(TimeNow)
             UUID = uuid.uuid5(uuid.NAMESPACE_DNS, GetStrUUID)
@@ -98,6 +115,20 @@ class TestAPIView(APIView):  # 查看所有及添加数据视图
         return Response("1")
 
 
+class TestAPIViewView(APIView):  # 查看所有及添加数据视图
+    def post(self, request):
+        try:
+            GetID = request.data.get('id')
+            queryset = Test.objects.all().filter(id=GetID)
+            querydict = {"results": queryset.values()}
+            return Response(querydict)
+        except Exception as e:
+            return Response(e)
+
+    def get(self, request):
+        return Response("1")
+
+
 class TestAddAPIView(APIView):  # 添加测试
     def post(self, request):
         try:
@@ -106,6 +137,8 @@ class TestAddAPIView(APIView):  # 添加测试
             method = "post" if method == 1 else "get"
             starturl = queryset.get("starturl")
             data = queryset.get("data", "")
+            if '{' in data and '}' in data:
+                data = json.loads(data)
             headers = queryset.get("headers", "")
             headers = getHeaders(headers)
             start_time = str(int(time.time()))
@@ -123,7 +156,7 @@ class TestAddAPIView(APIView):  # 添加测试
                 status=get_status,
             )
 
-            return Response(request.data)
+            return Response({'status': True})
         except Exception as e:
             return Response(e)
 

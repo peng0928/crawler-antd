@@ -1,4 +1,5 @@
-import json, re
+import json
+import re
 from .useragent import get_ua
 import requests
 
@@ -35,8 +36,19 @@ def getRequest(
     timeout=3,
     encode="utf-8",
 ):
-    response = requests.request(
-        url=url, headers=headers, timeout=timeout, method=method, data=data
-    )
-    response.encoding = encode
-    return response.status_code, response.text
+    try:
+        if method == 'post':
+            response = requests.request(
+                url=url, headers=headers, timeout=timeout, method=method, data=data
+            )
+        else:
+            response = requests.request(
+                url=url, headers=headers, timeout=timeout, method=method, params=data,verify=False,
+            )
+        code = response.status_code
+        text = response.text
+    except Exception as e:
+        code = 444
+        text = str(e)
+    finally:
+        return code, text,
