@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from drfapp import views, spiderView
+from drfapp import views, spiderView, selview
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -27,6 +27,9 @@ urlpatterns = [
     path("api/spider/del", views.SpiderDel.as_view()),
     path("api/upload", views.Upload.as_view()),
     path("api/upload/file", views.FileUpload),
+
+    path("api/spider/obj", selview.GetSpiderName.as_view()),
+
     # 测试
     path("api/test", views.TestAPIView.as_view()),
     path("api/test/view", views.TestAPIViewView.as_view()),

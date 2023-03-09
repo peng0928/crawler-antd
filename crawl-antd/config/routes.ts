@@ -52,6 +52,12 @@
         component: './spider/edit/webspideredit',
         hideInMenu: true,
       },
+      {
+        name: 'webspiderdata',
+        path: '/spider/webspider/res/:uuid', 
+        component: './spider/res/webspiderdata',
+        hideInMenu: true,
+      },
     ],
   },
 

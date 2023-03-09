@@ -17,10 +17,8 @@ export default () => {
   const formRef = useRef<any>();
   const actionRef = useRef<ActionType>();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [iskzModalOpen, setkzModalOpen] = useState(false);
-  const [isvalue, setValue] = useState(0);
-  const [iskz, setkz] = useState('');
   const [iscronvalue, setcronValue] = useState(null);
+  const [isSp, setSp] = useState([]);
 
   interface ActionType {
     reload: () => void;
@@ -31,14 +29,9 @@ export default () => {
     cancelEditable: (rowKey: key) => boolean;
   }
 
-  const SpiderDetail = (row) => {
-    let id: string = row.id;
-    history.push(`/spider/${id}`);
-    console.log(row);
-  };
   const columns: ProColumns<GithubIssueItem>[] = [
     {
-      title: '名称',
+      title: '项目',
       dataIndex: 'CronName',
       valueType: 'text',
       ellipsis: true,
@@ -46,7 +39,7 @@ export default () => {
       fixed: 'left',
     },
     {
-      title: '爬虫',
+      title: '定时爬虫',
       dataIndex: 'CronSpider',
       valueType: 'text',
       ellipsis: true,
@@ -67,8 +60,8 @@ export default () => {
       filters: true,
       onFilter: true,
       valueEnum: {
-        启动: { text: '启动', status: 'Success' },
-        未启动: { text: '关闭', status: 'Default' },
+        run: { text: '启动', status: 'Success' },
+        stop: { text: '关闭', status: 'Default' },
       },
     },
     {
@@ -106,34 +99,7 @@ export default () => {
       data: values,
     });
   };
-  const TestKZ = (row) => {
-    setkz(row.source);
-    setkzModalOpen(true);
-  };
 
-  const onFinish = async () => {
-    const values = await form.validateFields();
-    console.log(values);
-    console.log('Received values of form:', values);
-    // 掉接口
-    axios({
-      method: 'post',
-      url: '/api/test/add',
-      data: values,
-    })
-      .then(function (response) {
-        actionRef.current?.reload();
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    // 关闭模态框
-    setIsModalOpen(false);
-    message.success('测试添加成功');
-    // 表单清空
-    formRef.current.resetFields();
-    actionRef.current?.reload();
-  };
   const TestDellALL = (row) => {
     axios({
       method: 'post',
@@ -148,10 +114,20 @@ export default () => {
         console.log(error);
       });
   };
-  const handleChange = (value: string) => {
-    console.log(`selected ${value}`);
-  };
+
   const OpenTest = () => {
+    axios({
+      method: 'post',
+      url: '/api/spider/obj',
+    })
+      .then(function (response) {
+        console.log(response);
+        console.log(response.data.data);
+        setSp(response.data.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
     setIsModalOpen(true);
   };
 
@@ -164,21 +140,7 @@ export default () => {
     //     clearInterval(a);
     //   };
   }, []);
-  const onGenderChange = (value: string) => {
-    switch (value) {
-      case 'male':
-        formRef.current?.setFieldsValue({ note: 'Hi, man!' });
-        break;
-      case 'female':
-        formRef.current?.setFieldsValue({ note: 'Hi, lady!' });
-        break;
-      case 'other':
-        formRef.current?.setFieldsValue({ note: 'Hi there!' });
-        break;
-      default:
-        break;
-    }
-  };
+
   return (
     <div>
       <ProTable<GithubIssueItem>
@@ -212,7 +174,7 @@ export default () => {
             console.log(params, sorter, filter);
             sessionStorage.setItem('currentPage', 'params.current');
 
-            let res = await GetTest({
+            let res = await GetCron({
               page: params.current as number,
               project: 0,
               size: params.pageSize as number,
@@ -269,24 +231,35 @@ export default () => {
           </Button>,
         ]}
       />
+
+      {/* 定时任务模态框 */}
       <Modal
-        title="测试添加"
+        title="定时任务"
         onCancel={() => {
-          setIsModalOpen(false), formRef.current.resetFields();
+          setIsModalOpen(false);
+          formRef.current.resetFields();
         }}
         open={isModalOpen}
-        width={'80%'}
+        width={'50%'}
         footer={[
+          <Button
+            key="submit"
+            type="primary"
+            onClick={() => {
+              setIsModalOpen(false);
+              formRef.current.resetFields();
+            }}
+          >
+            提交
+          </Button>,
           <Button
             key="cancel"
             onClick={() => {
-              setIsModalOpen(false), formRef.current.resetFields();
+              setIsModalOpen(false);
+              formRef.current.resetFields();
             }}
           >
             取消
-          </Button>,
-          <Button key="submit" type="primary" onClick={onFinish}>
-            提交
           </Button>,
         ]}
       >
@@ -298,70 +271,19 @@ export default () => {
           labelCol={{ span: 4 }}
           wrapperCol={{ span: 18 }}
         >
-          <Form.Item label="请求方式" name="method">
-            <Radio.Group
-              onChange={(e) => {
-                setValue(e.target.value);
-              }}
-              value={isvalue}
-              defaultValue={0}
-            >
-              <Radio value={0}>GET</Radio>
-              <Radio value={1}>POST</Radio>
-            </Radio.Group>
+          <Form.Item label="定时任务名称" name="CronName">
+            <Input placeholder="Example" />
           </Form.Item>
-
-          <Form.Item
-            label="请求网站"
-            name="starturl"
-            rules={[
-              {
-                validator: async (_, names) => {
-                  if (!names || (names.search('http://') && names.search('https://'))) {
-                    return Promise.reject(new Error('链接不正确'));
-                  }
-                },
-              },
-            ]}
-          >
-            <Input placeholder="http://example.com" />
+          <Form.Item label="定时任务爬虫" name="CronSpider">
+            <Select options={isSp} />
           </Form.Item>
-          <Form.Item label="请求参数" name="data">
-            <Input.TextArea rows={6} placeholder="p=1&size=10" />
-          </Form.Item>
-          <Form.Item label="请求头" name="headers">
-            <Input.TextArea rows={8} placeholder="useragent: antd_spider" />
+          <Form.Item label="Cron表达式" name="Cron">
+            {/* 定时任务 */}
+            <Cron defaultType="customize" value={iscronvalue} onChange={setcronValue} />
+            <Input value={iscronvalue} />
           </Form.Item>
         </Form>
       </Modal>
-
-      {/* 快照模态框 */}
-      <Modal
-        title="页面快照"
-        onCancel={() => {
-          setkzModalOpen(false);
-        }}
-        open={iskzModalOpen}
-        width={'78%'}
-        footer={[
-          <Button
-            key="cancel"
-            onClick={() => {
-              setkzModalOpen(false);
-            }}
-          >
-            取消
-          </Button>,
-        ]}
-      >
-        {iskz}
-      </Modal>
-
-      {/* 定时任务 */}
-      <Space direction="vertical" style={{ width: '100%' }}>
-        <Cron defaultType="customize" value={iscronvalue} onChange={setcronValue} />
-        <div>{iscronvalue}</div>
-      </Space>
     </div>
   );
 };

@@ -77,7 +77,7 @@ export default () => {
         <Button size="small" type="primary" onClick={() => SpiderRun(row)}>
           运行
         </Button>,
-        <Button size="small" type="primary" onClick={() => SpiderRun(row)}>
+        <Button size="small" type="primary" onClick={() => SpiderRes(row)}>
           结果
         </Button>,
         <Button size="small" type="primary" danger onClick={() => SpiderDel(row)}>
@@ -110,6 +110,9 @@ export default () => {
     // SendAxios('/api/spider/del', DelData);
     // message.success('爬虫删除成功');
     // actionRef.current?.reload();
+  };
+  const SpiderRes = (row) => {
+    history.push(`/spider/webspider/res/${row.uuid}`);
   };
   const SendAxios = (url, values) => {
     axios({

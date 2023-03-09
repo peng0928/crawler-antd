@@ -112,3 +112,11 @@ export async function GetTest(body: API.ReqSpider, options?: { [key: string]: an
     ...(options || {}),
   });
 }
+
+export async function GetCron(body: API.ReqSpider, options?: { [key: string]: any }) {
+  return request<any>('/api/cron', {
+    method: 'POST',
+    data: body,
+    ...(options || {}),
+  });
+}
