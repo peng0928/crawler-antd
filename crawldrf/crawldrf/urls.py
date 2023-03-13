@@ -29,6 +29,7 @@ urlpatterns = [
     path("api/upload/file", views.FileUpload),
 
     path("api/spider/obj", selview.GetSpiderName.as_view()),
+    path("api/spider/res", selview.GetSpiderRes.as_view()),
 
     # 测试
     path("api/test", views.TestAPIView.as_view()),

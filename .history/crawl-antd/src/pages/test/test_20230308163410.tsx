@@ -180,6 +180,7 @@ export default () => {
 
   //@ts-ignore
   useEffect(() => {
+    setValue(0);
     //   let a = setInterval(async () => {
     //     actionRef.current?.reload();
     //   }, 600000);
@@ -329,18 +330,6 @@ export default () => {
               <Radio value={0}>GET</Radio>
               <Radio value={1}>POST</Radio>
             </Radio.Group>
-          </Form.Item>
-
-          <Form.Item label="编码方式" name="encode" initialValue={'utf-8'}>
-            <Select
-              defaultValue="utf-8"
-              style={{ width: 120 }}
-              onChange={handleChange}
-              options={[
-                { value: 'utf-8', label: 'utf-8' },
-                { value: 'gbk', label: 'gbk' },
-              ]}
-            />
           </Form.Item>
 
           <Form.Item

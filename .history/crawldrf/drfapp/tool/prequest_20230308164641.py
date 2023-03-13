@@ -5,7 +5,6 @@ import requests
 
 
 def getHeaders(headers):
-    print(headers)
     if headers:
         if headers[0] == "{" and headers[-1] == "}":
             header = (
@@ -44,16 +43,10 @@ def getRequest(
             )
         else:
             response = requests.request(
-                url=url, headers=headers, timeout=timeout, method=method, params=data, verify=False,
+                url=url, headers=headers, timeout=timeout, method=method, params=data
             )
-        try:
-            response.encoding = encode
-        except:
-            pass
-        code = response.status_code
-        text = response.text
     except Exception as e:
-        code = 444
-        text = str(e)
+        response.status_code = 444
+        response.text = str(e)
     finally:
-        return code, text,
+        return response.status_code, response.text,

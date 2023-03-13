@@ -58,11 +58,17 @@ class SpiderRunAPIView(APIView):  # 运行爬虫
 
 class SpiderResultAPIView(APIView):
     def post(self, request):
-        querylist = []
+        queryset = []
         myclient = PrMongo()
         collection = myclient.findall(tbname='runoob')
-        for i in collection:
-            _id = i.get('_id')
-            i.update({'_id': str(_id)})
-            querylist.append(i)
-        return Response({'results': querylist})
+        collection = [doc for doc in collection]
+        clist = collection[0]
+        for k, v in clist.items():
+            queryset.append({
+                'title': k,
+                'dataIndex': k,
+                'key': k,
+            })
+        print(queryset)
+        Status = {'status': True}
+        return Response(queryset)

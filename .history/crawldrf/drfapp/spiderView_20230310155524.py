@@ -62,7 +62,6 @@ class SpiderResultAPIView(APIView):
         myclient = PrMongo()
         collection = myclient.findall(tbname='runoob')
         for i in collection:
-            _id = i.get('_id')
-            i.update({'_id': str(_id)})
+            del i('_id')
             querylist.append(i)
         return Response({'results': querylist})

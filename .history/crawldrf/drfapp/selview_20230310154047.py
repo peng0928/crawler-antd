@@ -2,7 +2,6 @@ from django.shortcuts import render, HttpResponse
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from drfapp.models import *
-from drfapp.tool.prmongo import PrMongo
 
 
 class GetSpiderName(APIView):
@@ -18,16 +17,4 @@ class GetSpiderName(APIView):
 
 class GetSpiderRes(APIView):
     def post(self, request):
-        queryset = []
-        myclient = PrMongo()
-        collection = myclient.findall(tbname='runoob')
-        collection = [doc for doc in collection]
-        clist = collection[0]
-        for k, v in clist.items():
-            queryset.append({
-                'title': k,
-                'dataIndex': k,
-                'key': k,
-                'ellipsis': True
-            })
-        return Response(queryset)
+        pass

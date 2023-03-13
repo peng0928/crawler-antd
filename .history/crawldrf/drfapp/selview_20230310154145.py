@@ -28,6 +28,5 @@ class GetSpiderRes(APIView):
                 'title': k,
                 'dataIndex': k,
                 'key': k,
-                'ellipsis': True
             })
         return Response(queryset)

@@ -134,17 +134,16 @@ class TestAddAPIView(APIView):  # 添加测试
         try:
             queryset = request.data
             method = queryset.get("method")
+            encode = queryset.get("encode")
             method = "post" if method == 1 else "get"
             starturl = queryset.get("starturl")
             data = queryset.get("data", "")
-            if '{' in data and '}' in data:
-                data = json.loads(data)
             headers = queryset.get("headers", "")
             headers = getHeaders(headers)
             start_time = str(int(time.time()))
             _md5 = md5(start_time)
             get_status, get_source = getRequest(
-                url=starturl, headers=headers, method=method, data=data
+                url=starturl, headers=headers, method=method, data=data, encode=encode
             )
             Test.objects.create(
                 _md5=_md5,

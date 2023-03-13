@@ -55,6 +55,18 @@ export default function OnlineEdit() {
       formRef={ref}
       toolBarRender={() => [
         <Button
+          key="set"
+          onClick={() => {
+            if (ref.current) {
+              ref.current.setFieldsValue({
+                name: 'test-xxx',
+              });
+            }
+          }}
+        >
+          赋值
+        </Button>,
+        <Button
           key="submit"
           onClick={() => {
             if (ref.current) {

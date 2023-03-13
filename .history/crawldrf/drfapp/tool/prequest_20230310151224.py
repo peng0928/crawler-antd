@@ -46,10 +46,6 @@ def getRequest(
             response = requests.request(
                 url=url, headers=headers, timeout=timeout, method=method, params=data, verify=False,
             )
-        try:
-            response.encoding = encode
-        except:
-            pass
         code = response.status_code
         text = response.text
     except Exception as e:

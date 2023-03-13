@@ -4,7 +4,6 @@ import { ProTable } from '@ant-design/pro-components';
 import { Button } from 'antd';
 import { useRef, useState, useEffect } from 'react';
 import { history, useParams } from 'umi';
-import { GetSpiderRes } from '../../../services/ant-design-pro/api';
 
 export default function OnlineEdit() {
   const params = useParams();
@@ -30,23 +29,18 @@ export default function OnlineEdit() {
   return (
     <ProTable<TableListItem>
       columns={iscolumn}
-      request={async (params = {}, sorter, filter) => {
-        try {
-          console.log(params, sorter, filter);
-          sessionStorage.setItem('currentPage', 'params.current');
-          let res = await GetSpiderRes({
-            spider: 'pucode',
-          });
-          return {
-            data: res.results,
-            success: true,
-            total: res.count,
-          };
-        } catch (error) {
-          message.error('请求失败！');
-          return {};
-        }
-      }}
+      request={() =>
+        Promise.resolve({
+          data: [
+            {
+              key: 1,
+              name: `TradeCode ${1}`,
+              createdAt: 1602572994055,
+            },
+          ],
+          success: true,
+        })
+      }
       rowKey="key"
       pagination={{
         showSizeChanger: true,
@@ -54,6 +48,18 @@ export default function OnlineEdit() {
       search={false}
       formRef={ref}
       toolBarRender={() => [
+        <Button
+          key="set"
+          onClick={() => {
+            if (ref.current) {
+              ref.current.setFieldsValue({
+                name: 'test-xxx',
+              });
+            }
+          }}
+        >
+          赋值
+        </Button>,
         <Button
           key="submit"
           onClick={() => {

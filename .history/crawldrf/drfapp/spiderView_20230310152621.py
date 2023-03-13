@@ -56,13 +56,20 @@ class SpiderRunAPIView(APIView):  # 运行爬虫
         return Response(Status)  # 返回成功数据
 
 
-class SpiderResultAPIView(APIView):
+class SpiderResultAPIView(APIView):  # 运行爬虫
     def post(self, request):
-        querylist = []
+        clist = []
         myclient = PrMongo()
         collection = myclient.findall(tbname='runoob')
-        for i in collection:
-            _id = i.get('_id')
-            i.update({'_id': str(_id)})
-            querylist.append(i)
-        return Response({'results': querylist})
+        print(collection)
+        Status = [{
+            'title': '标题',
+            'dataIndex': 'name',
+            'key': 'name',
+        },
+            {
+            'title': '创建时间',
+            'key': 'since',
+            'dataIndex': 'createdAt',
+        }]
+        return Response(Status)  # 返回成功数据

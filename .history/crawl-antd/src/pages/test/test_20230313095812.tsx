@@ -331,7 +331,7 @@ export default () => {
             </Radio.Group>
           </Form.Item>
 
-          <Form.Item label="编码方式" name="encode" initialValue={'utf-8'}>
+          <Form.Item label="编码方式" name="encode">
             <Select
               defaultValue="utf-8"
               style={{ width: 120 }}
