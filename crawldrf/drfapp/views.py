@@ -2,6 +2,7 @@ from drfapp.treenodes import *
 from django import forms
 from django.views.decorators.csrf import csrf_exempt
 import uuid
+import os
 import time
 import datetime
 from django.shortcuts import render, HttpResponse
@@ -39,6 +40,8 @@ class SpiderAPIView(APIView):  # 查看所有及添加数据视图
                 .filter(project=project, spider=spider)
                 .order_by(sorter)
             )
+        print(roles)
+
         page = MyPageNumberPagination()
         page_roles = page.paginate_queryset(
             queryset=roles, request=request, view=self)
@@ -100,6 +103,19 @@ class SpiderAdd(APIView):  # 查看所有及添加数据视图
         except Exception as e:
             Status = {"status": False, "msg": "爬虫添加失败"}
             return Response(e)
+
+
+class PySpiderAdd(APIView):  # PySpiderAdd
+    def post(self, request):
+        SpiderData = request.data.get("data")
+        spider = SpiderData.get('SpiderName')
+        TimeNow = datetime.datetime.now()
+        GetStrUUID = spider + "|" + str(1) + "|" + str(TimeNow)
+        UUID = uuid.uuid5(uuid.NAMESPACE_DNS, GetStrUUID)
+        SpiderTask.objects.create(
+            spider=spider, project=1, uuid=UUID)
+        Status = {"status": True, "msg": "爬虫添加成功"}
+        return Response(Status)
 
 
 class TestAPIView(APIView):  # 查看所有及添加数据视图
@@ -203,15 +219,46 @@ class Upload(APIView):
 def FileUpload(request):
     if request.method == "POST":
         FILES = request.FILES
+        os.makedirs('./upload', exist_ok=True)
         for k, v in FILES.items():
             ksplit = k.split("&")
             uuid = ksplit[0]
             path = ksplit[1]
+            fpath = path.split('/')[:-1]
+            fpath = '/'.join(fpath)
+            os.makedirs(f'./upload/{fpath}', exist_ok=True)
             UploadFileModel.objects.create(uuid=uuid, path=path)
-        #     with open(f'./upload/{v}', 'wb+') as destination:
-        #         for chunk in v.chunks():
-        #             destination.write(chunk)
+            with open(f'./upload/{fpath}/{v}', 'wb+') as destination:
+                for chunk in v.chunks():
+                    destination.write(chunk)
 
         return HttpResponse("1sssss")
 
     return HttpResponse("1")
+
+
+class FileView(APIView):
+    def post(self, request):
+        GetTree = request.data.get('tree')
+        if GetTree:
+            GetTree = './upload/' + '/'.join(GetTree.split('/')[1:])
+            with open(GetTree, 'r', encoding='utf-8')as f:
+                ff = f.read()
+            Status = {"text": ff}
+        else:
+            Status = {"text": ""}
+        return Response(Status)
+
+
+class FileSaveView(APIView):
+    def post(self, request):
+        GetTree = request.data.get('tree')
+        GetCode = request.data.get('code')
+        if len(GetTree) == 1:
+            GetTree = './upload/' + '/'.join(GetTree[0].split('/')[1:])
+            with open(GetTree, 'w', encoding='utf-8')as f:
+                f.write(GetCode)
+            Status = {"text": GetCode}
+        else:
+            Status = {"text": ""}
+        return Response(Status)

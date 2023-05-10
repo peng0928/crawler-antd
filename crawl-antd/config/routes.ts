@@ -36,9 +36,9 @@
         component: './spider/webspider',
       },
       {
-        name: 'scrapy',
-        path: '/spider/scrapy',
-        component: './spider',
+        name: 'pyspider',
+        path: '/spider/pyspider',
+        component: './spider/pyspider',
       },
       {
         name: 'spiderconfig',
