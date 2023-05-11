@@ -1,0 +1,20 @@
+1678776965784	geckodriver	INFO	Listening on 127.0.0.1:52423
+1678776968787	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--headless" "--user-agent=<function get_ua at 0x00000250E0CE99D0>" "--remote-debugging-port" "52424" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\admin\\AppData\\Local\\Temp\\rust_mozprofile7ig4fK"
+*** You are running in headless mode.
+1678776970816	Marionette	INFO	Marionette enabled
+1678776970829	Marionette	INFO	Listening on port 52442
+Read port: 52442
+WebDriver BiDi listening on ws://127.0.0.1:52424
+1678776971061	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\admin\\AppData\\Local\\Temp\\rust_mozprofile7ig4fK\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:52424/devtools/browser/cdb7965f-28cb-43f8-9323-0478c3be6824
+1678776975914	Marionette	WARN	Ignoring event 'DOMContentLoaded' because document has an invalid readyState of 'complete'.
+Shutting down due to socket process crash.
+[Parent 16724, IPC I/O Parent] WARNING: pipe error: 232: file /builds/worker/checkouts/gecko/ipc/chromium/src/chrome/common/ipc_channel_win.cc:559
+1678777168402	Marionette	INFO	Stopped listening on port 52442
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down
+JavaScript error: chrome://remote/content/marionette/cert.sys.mjs, line 51: NS_ERROR_NOT_AVAILABLE: Component returned failure code: 0x80040111 (NS_ERROR_NOT_AVAILABLE) [nsICertOverrideService.setDisableAllSecurityChecksAndLetAttackersInterceptMyData]
+!!! error running onStopped callback: TypeError: callback is not a function
+A content process crashed and MOZ_CRASHREPORTER_SHUTDOWN is set, shutting down

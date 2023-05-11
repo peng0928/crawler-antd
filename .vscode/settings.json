@@ -3,5 +3,9 @@
   "editor.formatOnSave": true,
   "editor.formatOnType": true,
   "dataworkspace.excludedProjects": ["crawldrf/drfapp/1/1.sqlproj"],
-  "python.formatting.provider": "autopep8"
+  "python.formatting.provider": "autopep8",
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.autopep8"
+  },
+  "vue.codeActions.enabled": false
 }

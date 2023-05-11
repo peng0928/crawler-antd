@@ -25,6 +25,7 @@ urlpatterns = [
     path("api/spider/uuid", views.SpiderUUIDAPIView.as_view()),
     path("api/spider/add", views.SpiderAdd.as_view()),
     path("api/spider/del", views.SpiderDel.as_view()),
+    path("api/spider/edit", views.SpiderEdit.as_view()),
     path("api/upload", views.Upload.as_view()),
     path("api/upload/file", views.FileUpload),
 

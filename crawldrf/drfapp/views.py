@@ -66,6 +66,19 @@ class SpiderDel(APIView):  # 查看所有及添加数据视图
             return Response(e)
 
 
+class SpiderEdit(APIView):  # 查看所有及添加数据视图
+    def post(self, request):
+        try:
+            Getuuidd = request.data.get("uuid")
+            query = SpiderTask.objects.filter(uuid=Getuuidd).values()
+            query = list(query)[0].get('value')
+            query = json.loads(query)
+            Status = {"status": True, "data": query}
+            return Response(Status)
+        except Exception as e:
+            return Response(e)
+
+
 class SpiderAdd(APIView):  # 查看所有及添加数据视图
     def post(self, request):
         try:
