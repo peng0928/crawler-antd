@@ -63,6 +63,7 @@ export default function OnlineEdit() {
   const [isShowModalOpen, setShowModalOpen] = useState(false);
   const [fileList, setFileList] = useState([]);
   const [uploading, setUploading] = useState(false);
+  const [istree, settree] = useState('');
   const params = useParams();
   const projectname = '111';
   const spidername = '222';
@@ -71,8 +72,19 @@ export default function OnlineEdit() {
   let spiderfile = new FormData();
   let sfile = [];
   const onSelect = (keys, info) => {
-    myCodeMirror.setOption('value', '11111111\n11111111\n1111111111 11    1'); //初始值
     console.log('Trigger Select1', keys, info);
+    axios({
+      method: 'post',
+      url: '/api/upload/view',
+      data: { tree: keys[0] },
+    }).then(function (response) {
+      const text = response.data.text;
+      settree(keys);
+      myCodeMirror.setOption('value', text); //初始值
+
+      // settext(text);
+    });
+    // myCodeMirror.setOption('value', istext); //初始值
   };
   const onRightClick = (keys, info) => {};
   const onExpand = (keys, info) => {
@@ -88,7 +100,7 @@ export default function OnlineEdit() {
     axios({
       method: 'post',
       url: '/api/spider/run',
-      data: { uuid: params['uuid'], SpiderType: 0 },
+      data: { uuid: params['uuid'], SpiderType: 1 },
     }).then(function (response) {
       console.log(isProject);
       message.success('运行成功');
@@ -116,10 +128,9 @@ export default function OnlineEdit() {
       matchBrackets: true, //括号匹配
       autoCloseBrackets: true, //括号自动补全，()[]{}''""
       hintOptions: {
-        completeSingle: false, //代码自动补全功能不默认补充
+        completeSingle: true, //代码自动补全功能不默认补充
       },
     });
-    myCodeMirror.setOption('value', 'print("hello word")'); //初始值
     myCodeMirror.on('keypress', function () {
       //代码补全功能
       myCodeMirror.showHint();
@@ -146,27 +157,25 @@ export default function OnlineEdit() {
   }, []);
 
   // 将值传给后端，后端返回运行结果
-  function runFunction() {
-    myCodeMirror.setOption('value', '1111'); //初始值
-    console.log(myCodeMirror.getValue());
+  function savefunc() {
+    console.log(istree);
+    // console.log(myCodeMirror.getValue());
     console.log(myCodeMirror.modes);
-    // axios({
-    //   method: 'post',
-    //   url: 'http://192.168.2.139:7000/edit_api/edit',
-    //   params: {
-    //     code: myCodeMirror.getValue(),
-    //   },
-    //   // timeout: 5000,
-    // })
-    //   .then(function (res) {
-    //     console.log('3:', res);
-    //     if (res.data.code === 0) {
-    //       setSubmitResult(res.data.data.output);
-    //     }
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
+    axios({
+      method: 'post',
+      url: '/api/upload/save',
+      data: {
+        tree: istree,
+        code: myCodeMirror.getValue(),
+      },
+      // timeout: 5000,
+    })
+      .then(function (res) {
+        message.success('保存成功');
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   }
   const onFinish = (values) => {
     console.log('Success:', values);
@@ -263,6 +272,9 @@ export default function OnlineEdit() {
           </Button>
           <Button type="warning" onClick={ScrapyRun} icon={<UploadOutlined />} loading={uploading}>
             {uploading ? 'Uploading' : '运行'}
+          </Button>
+          <Button type="warning" onClick={savefunc} icon={<UploadOutlined />} loading={uploading}>
+            {uploading ? 'Uploading' : '保存'}
           </Button>
           <Row style={{ paddingTop: 18 }}>
             <Col span={20} push={4}>

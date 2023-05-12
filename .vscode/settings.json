@@ -1,11 +1,15 @@
 {
-  "editor.formatOnPaste": true,
+  "editor.formatOnPaste": false,
   "editor.formatOnSave": true,
   "editor.formatOnType": true,
+<<<<<<< HEAD
   "dataworkspace.excludedProjects": ["crawldrf/drfapp/1/1.sqlproj"],
   "python.formatting.provider": "autopep8",
   "[python]": {
     "editor.defaultFormatter": "ms-python.autopep8"
   },
   "vue.codeActions.enabled": false
+=======
+  "python.formatting.provider": "autopep8"
+>>>>>>> 3ccf917586a45627c5fba5821be464fe097d5634
 }

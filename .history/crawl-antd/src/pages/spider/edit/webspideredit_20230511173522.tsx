@@ -119,6 +119,8 @@ export default function OnlineEdit() {
       });
   }, []);
 
+
+export default () => {
   return (
     <Form
       name="dynamic_form_nest_item"
@@ -290,4 +292,4 @@ export default function OnlineEdit() {
       </div>
     </Form>
   );
-}
+};

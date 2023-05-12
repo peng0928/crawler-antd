@@ -72,7 +72,7 @@ export default () => {
       valueType: 'option',
       render: (text, row, index, action) => [
         <Button type="default" size="small" onClick={() => SpiderEdit(row)}>
-          编辑
+          查看
         </Button>,
         <Button size="small" type="primary" onClick={() => SpiderRun(row)}>
           运行
@@ -124,6 +124,7 @@ export default () => {
 
   const [Editname, setEditname] = useState('');
   const SpiderEdit = (row) => {
+    // setIsModalOpen(true);
     history.push(`/spider/webspider/edit/${row.uuid}`);
   };
 

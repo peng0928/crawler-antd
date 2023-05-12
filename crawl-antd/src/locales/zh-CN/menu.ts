@@ -25,7 +25,7 @@ export default {
   'menu.list.index': '首页',
   'menu.spider': '爬虫',
   'menu.test': '请求测试',
-  'menu.spider.scrapy': 'scrapy爬虫',
+  'menu.spider.pyspider': 'py爬虫',
   'menu.spider.webspider': 'web爬虫',
   'menu.spider.webspideredit': 'web爬虫编辑',
   'menu.task': '任务列表',

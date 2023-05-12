@@ -24,10 +24,13 @@ urlpatterns = [
     path("api/spider/result", spiderView.SpiderResultAPIView.as_view()),
     path("api/spider/uuid", views.SpiderUUIDAPIView.as_view()),
     path("api/spider/add", views.SpiderAdd.as_view()),
+    path("api/spider/py/add", views.PySpiderAdd.as_view()),
     path("api/spider/del", views.SpiderDel.as_view()),
     path("api/spider/edit", views.SpiderEdit.as_view()),
     path("api/upload", views.Upload.as_view()),
     path("api/upload/file", views.FileUpload),
+    path("api/upload/view", views.FileView.as_view()),
+    path("api/upload/save", views.FileSaveView.as_view()),
 
     path("api/spider/obj", selview.GetSpiderName.as_view()),
     path("api/spider/res", selview.GetSpiderRes.as_view()),
