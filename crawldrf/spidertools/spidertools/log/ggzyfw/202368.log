@@ -1,0 +1,60 @@
+2023-06-08 08:56:18 [scrapy.utils.log] INFO: Scrapy 2.7.1 started (bot: spidertools)
+2023-06-08 08:56:18 [scrapy.utils.log] INFO: Versions: lxml 4.9.2.0, libxml2 2.9.12, cssselect 1.2.0, parsel 1.7.0, w3lib 2.1.1, Twisted 22.10.0, Python 3.8.8 (tags/v3.8.8:024d805, Feb 19 2021, 13:18:16) [MSC v.1928 64 bit (AMD64)], pyOpenSSL 23.0.0 (OpenSSL 3.0.8 7 Feb 2023), cryptography 39.0.1, Platform Windows-10-10.0.19041-SP0
+2023-06-08 08:56:18 [scrapy.crawler] INFO: Overridden settings:
+{'BOT_NAME': 'spidertools',
+ 'COOKIES_ENABLED': False,
+ 'LOG_FILE': 'log/ggzyfw/202368.log',
+ 'LOG_LEVEL': 'INFO',
+ 'LOG_STDOUT': 'true',
+ 'NEWSPIDER_MODULE': 'spidertools.spiders',
+ 'REQUEST_FINGERPRINTER_IMPLEMENTATION': '2.7',
+ 'SPIDER_MODULES': ['spidertools.spiders']}
+2023-06-08 08:56:18 [scrapy.extensions.telnet] INFO: Telnet Password: f9d23bdd6de4dbc6
+2023-06-08 08:56:18 [scrapy.middleware] INFO: Enabled extensions:
+['scrapy.extensions.corestats.CoreStats',
+ 'scrapy.extensions.telnet.TelnetConsole',
+ 'scrapy.extensions.logstats.LogStats']
+2023-06-08 08:56:21 [scrapy.middleware] INFO: Enabled downloader middlewares:
+['scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware',
+ 'scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware',
+ 'scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware',
+ 'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware',
+ 'spidertools.PenrMiddlewares.Middleware',
+ 'scrapy.downloadermiddlewares.retry.RetryMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware',
+ 'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.RedirectMiddleware',
+ 'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware',
+ 'scrapy.downloadermiddlewares.stats.DownloaderStats']
+2023-06-08 08:56:21 [scrapy.middleware] INFO: Enabled spider middlewares:
+['scrapy.spidermiddlewares.httperror.HttpErrorMiddleware',
+ 'scrapy.spidermiddlewares.offsite.OffsiteMiddleware',
+ 'scrapy.spidermiddlewares.referer.RefererMiddleware',
+ 'scrapy.spidermiddlewares.urllength.UrlLengthMiddleware',
+ 'scrapy.spidermiddlewares.depth.DepthMiddleware']
+2023-06-08 08:56:21 [scrapy.middleware] INFO: Enabled item pipelines:
+['spidertools.pipelines.SpidertoolsPipeline']
+2023-06-08 08:56:21 [scrapy.core.engine] INFO: Spider opened
+2023-06-08 08:56:21 [scrapy.extensions.logstats] INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)
+2023-06-08 08:56:21 [scrapy.extensions.telnet] INFO: Telnet console listening on 127.0.0.1:6023
+2023-06-08 08:56:25 [scrapy.core.engine] INFO: Closing spider (finished)
+2023-06-08 08:56:25 [scrapy.statscollectors] INFO: Dumping Scrapy stats:
+{'downloader/request_bytes': 4537,
+ 'downloader/request_count': 11,
+ 'downloader/request_method_count/GET': 11,
+ 'downloader/response_bytes': 208687,
+ 'downloader/response_count': 11,
+ 'downloader/response_status_count/200': 11,
+ 'elapsed_time_seconds': 3.100065,
+ 'finish_reason': 'finished',
+ 'finish_time': datetime.datetime(2023, 6, 8, 0, 56, 25, 1357),
+ 'item_scraped_count': 10,
+ 'log_count/INFO': 10,
+ 'request_depth_max': 1,
+ 'response_received_count': 11,
+ 'scheduler/dequeued': 11,
+ 'scheduler/dequeued/memory': 11,
+ 'scheduler/enqueued': 11,
+ 'scheduler/enqueued/memory': 11,
+ 'start_time': datetime.datetime(2023, 6, 8, 0, 56, 21, 901292)}
+2023-06-08 08:56:25 [scrapy.core.engine] INFO: Spider closed (finished)
